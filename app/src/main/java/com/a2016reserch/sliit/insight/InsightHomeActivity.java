@@ -3,6 +3,7 @@ package com.a2016reserch.sliit.insight;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 // Add a comment
+// added branch
 public class InsightHomeActivity extends AppCompatActivity {
 
     @Override
