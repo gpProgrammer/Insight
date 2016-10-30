@@ -2,40 +2,27 @@ package com.a2016reserch.sliit.insight;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
+import com.a2016reserch.sliit.insight.findplaces.MainActivity;
+
 import java.util.Locale;
 
-// Add a comment
-// add branche home confi
 public class InsightHomeActivity  extends Activity implements TextToSpeech.OnInitListener {
 
-    private LocationManager locationManager;
-    private String provider;
-    int newCount=0;
-    int start=-1;
-    TextView name;
-    String [] options = new String[] { "sd","cal","ms","n","gm","lm" };
-    private GestureDetector mGestureDetector;
-    private GestureDetectorCompat gestureDetector;
+    private int start=-1;  // main items counter variable
+    private TextView name; // text view variable
+    private String [] options = new String[] { "sd","cal","ms","n","gm","lm" }; // String array for components
+    private GestureDetector mGestureDetector; // Gesture Detector variable
 
-    private TextToSpeech tts;
+    private TextToSpeech tts; // text to speech variable
     // This code can be any value you want, its just a checksum.
     private static final int MY_DATA_CHECK_CODE = 1234;
-
-    String addressField = "not available";
-
-    Location location = null;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +39,7 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
         checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
 
+        // change text view value
         name=(TextView)findViewById(R.id.textView);
         name.setText("Welcome to Insight");
 
@@ -59,7 +47,7 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
             public void run() {
                 try {
 
-                    sleep(2000);
+                    sleep(1500);
                     speakWords("Welcome to Insight");
 
                 } catch (Exception e) {
@@ -69,9 +57,6 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
         };
 
         logoTimer.start();
-
-
-
     }
 
 
@@ -84,8 +69,6 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
             if (result == TextToSpeech.LANG_MISSING_DATA
                     || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.e("TTS", "This Language is not supported");
-            } else {
-
             }
 
         } else {
@@ -176,14 +159,10 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
         // speak straight away
         if (tts != null) {
             tts.setSpeechRate(1);
-            //tts.speak(speech, TextToSpeech.QUEUE_ADD, null);
-
             // Drop all pending entries in the playback queue.
             tts.speak(speech, TextToSpeech.QUEUE_FLUSH, null);
 
         }
-
-
     }
 
     @Override
@@ -193,15 +172,14 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
 
         return super.onTouchEvent(event);
 
-
     }
+
     class Android_Gesture_Detector implements GestureDetector.OnGestureListener,
             GestureDetector.OnDoubleTapListener {
 
         @Override
         public boolean onDown(MotionEvent e) {
             Log.d("Gesture ", " onDown");
-            // Toast.makeText(calculator.this, "DOWNNNNN", Toast.LENGTH_LONG).show();
             return true;
         }
 
@@ -222,10 +200,52 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
             Log.d("Gesture ", " onShowPress");
         }
 
+        //TODOO : Add your activities onDoubleTap event
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             Log.d("Gesture ", " onDoubleTap");
+            if(start==0)
+            {
+                //  view_key_pad();
 
+            }
+            if(start==-1)
+            {
+                // view_key_pad();
+
+            }
+            else if(start==1)
+            {
+                //  Intent intent = new Intent(Home.this, calculator.class);
+                //  startActivity(intent);
+                // onDestroy();
+
+            }
+            else if(start==2)
+            {
+                // Activate navigathion based service module
+                Intent intent = new Intent(InsightHomeActivity.this, MainActivity.class);
+                startActivity(intent);
+
+            }
+            else if(start==3)
+            {
+                // messaging
+
+            }
+            else if(start==4)
+            {
+
+                // Learning Module
+            }
+            else if(start==5)
+            {
+                // Gaming Module
+            }
+            else
+            {
+              speakWords("invalid input, check please!!");
+            }
             return true;
         }
 
