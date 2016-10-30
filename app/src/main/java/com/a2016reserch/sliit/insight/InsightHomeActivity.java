@@ -15,6 +15,8 @@ import java.util.Locale;
 
 public class InsightHomeActivity  extends Activity implements TextToSpeech.OnInitListener {
 
+    public static String lastCommand  = null;
+
     private int start=-1;  // main items counter variable
     private TextView name; // text view variable
     private String [] options = new String[] { "sd","cal","ms","n","gm","lm" }; // String array for components
@@ -76,15 +78,34 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
         }
     }
 
+    /**
+     * Called when another activity is taking focus.
+     */
+    @Override
+    protected void onRestart() {
+
+        if (tts == null) {
+            // success, create the TTS instance
+            tts = new TextToSpeech(this, this);
+        }
+
+        super.onRestart();
+    }
+
 
     /**
      * Called when the activity is about to become visible.
      */
     @Override
     protected void onStart() {
-        super.onStart();
+        if (tts == null) {
+            // success, create the TTS instance
+            tts = new TextToSpeech(this, this);
+        }
 
+        super.onStart();
     }
+
     /**
      * Called when the activity is no longer visible.
      */
@@ -95,7 +116,7 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
         if (tts != null)
         {
             tts.stop();
-            tts.shutdown();
+           // tts.shutdown();
         }
         super.onStop();
 
@@ -111,7 +132,7 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
         if (tts != null)
         {
             tts.stop();
-            tts.shutdown();
+            //tts.shutdown();
         }
         super.onDestroy();
 
@@ -161,7 +182,7 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
             tts.setSpeechRate(1);
             // Drop all pending entries in the playback queue.
             tts.speak(speech, TextToSpeech.QUEUE_FLUSH, null);
-
+            lastCommand = speech;
         }
     }
 
@@ -180,12 +201,35 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
         @Override
         public boolean onDown(MotionEvent e) {
             Log.d("Gesture ", " onDown");
+
             return true;
         }
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             Log.d("Gesture ", " onSingleTapConfirmed");
+            Thread logoTimer = new Thread() {
+                public void run() {
+                    try {
+
+                        sleep(1000);
+                        if(lastCommand.equalsIgnoreCase("Exit!")) {
+                            speakWords("app is restarted!");
+                        }
+                        else
+                        {
+
+                            speakWords(lastCommand);
+                        }
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            logoTimer.start();
             return true;
         }
 
