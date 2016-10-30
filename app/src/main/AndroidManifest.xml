@@ -22,18 +22,10 @@
         </activity>
         <activity android:name=".findplaces.MainActivity" />
         <activity android:name=".findplaces.GetBusHaltsActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".findplaces.GetNearestActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".findplaces.WalkingDirectionActivity"></activity>
     </application>
