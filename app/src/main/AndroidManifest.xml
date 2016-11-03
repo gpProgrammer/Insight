@@ -21,13 +21,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".findplaces.MainActivity" />
-        <activity android:name=".findplaces.GetBusHaltsActivity">
+        <activity android:name=".findplaces.GetBusHaltsActivity"></activity>
+        <activity android:name=".findplaces.GetNearestActivity"></activity>
+        <activity android:name=".findplaces.WalkingDirectionActivity" />
 
-        </activity>
-        <activity android:name=".findplaces.GetNearestActivity">
+        <service
+            android:name=".FetchAddressIntentService"
+            android:exported="false" />
 
-        </activity>
-        <activity android:name=".findplaces.WalkingDirectionActivity"></activity>
+        <activity android:name=".findplaces.WalkingDirection"></activity>
     </application>
 
 </manifest>
