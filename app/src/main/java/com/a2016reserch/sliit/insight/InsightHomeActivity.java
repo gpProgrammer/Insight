@@ -13,6 +13,9 @@ import com.a2016reserch.sliit.insight.findplaces.MainActivity;
 
 import java.util.Locale;
 
+
+
+// branch comment
 public class InsightHomeActivity  extends Activity implements TextToSpeech.OnInitListener {
 
     public static String lastCommand  = null;
