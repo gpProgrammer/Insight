@@ -66,9 +66,9 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
             public void run() {
                 try {
 
-                    sleep(2500);
+                    sleep(2000);
                     speakWords("Welcome! to navigation services");
-                    sleep(4500);
+                    sleep(4000);
                     speakWords("Long press to get help");
 
 
@@ -260,11 +260,22 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
     public void onBackPressed() {
 
         speakWords("back to home page");
-        Intent intent = new Intent(MainActivity.this, InsightHomeActivity.class);
-        startActivity(intent);
+        Thread timer = new Thread() {
 
+            public void run() {
+                try {
+                    sleep(1000);
+                    Intent intent = new Intent(MainActivity.this, InsightHomeActivity.class);
+                    startActivity(intent);
 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        timer.start();
     }
+
 
     /**
      * This is the callback from the TTS engine check, if a TTS is installed we
