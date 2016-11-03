@@ -366,6 +366,11 @@ public class MainActivity extends Activity implements  TextToSpeech.OnInitListen
                     } catch (IOException ex) {
                         ex.printStackTrace();
                         speakWords("turn on mobile data!");
+                        // Can't get location.
+                        // GPS or network is not enabled.
+                        // Ask user to enable GPS/network in settings.
+                        gpsLocation.showSettingsAlert();
+
                     } catch (NullPointerException ex) {
                         speakWords("Address is not found! ");
                         ex.printStackTrace();
