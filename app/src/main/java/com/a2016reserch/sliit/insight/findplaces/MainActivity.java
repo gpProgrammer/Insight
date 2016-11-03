@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
+import com.a2016reserch.sliit.insight.InsightHomeActivity;
 import com.a2016reserch.sliit.insight.R;
 
 import java.io.IOException;
@@ -258,9 +259,10 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
     @Override
     public void onBackPressed() {
 
-        speakWords("Exit!");
-        // onDestroy();
-        moveTaskToBack(true);
+        speakWords("back to home page");
+        Intent intent = new Intent(MainActivity.this, InsightHomeActivity.class);
+        startActivity(intent);
+
 
     }
 
