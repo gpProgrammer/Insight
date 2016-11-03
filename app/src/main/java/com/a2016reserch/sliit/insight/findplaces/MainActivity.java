@@ -14,26 +14,24 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
+import com.a2016reserch.sliit.insight.InsightHomeActivity;
 import com.a2016reserch.sliit.insight.R;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+// add a comment into Test Branch
 public class MainActivity extends Activity implements LocationListener, TextToSpeech.OnInitListener {
-    private LocationManager locationManager;
-    private String provider;
-
-    private GestureDetector mGestureDetector;
-    private GestureDetectorCompat gestureDetector;
-
-    private TextToSpeech tts;
     // This code can be any value you want, its just a checksum.
     private static final int MY_DATA_CHECK_CODE = 1234;
-
     String addressField = "not available";
-
     Location location = null;
+    private LocationManager locationManager;
+    private String provider;
+    private GestureDetector mGestureDetector;
+    private GestureDetectorCompat gestureDetector;
+    private TextToSpeech tts;
 
     /**
      * Called when the activity is first created.
@@ -68,9 +66,9 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
             public void run() {
                 try {
 
-                    sleep(2500);
+                    sleep(2000);
                     speakWords("Welcome! to navigation services");
-                    sleep(4500);
+                    sleep(4000);
                     speakWords("Long press to get help");
 
 
@@ -261,11 +259,23 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
     @Override
     public void onBackPressed() {
 
-        speakWords("Exit!");
-        // onDestroy();
-        moveTaskToBack(true);
+        speakWords("back to home page");
+        Thread timer = new Thread() {
 
+            public void run() {
+                try {
+                    sleep(1000);
+                    Intent intent = new Intent(MainActivity.this, InsightHomeActivity.class);
+                    startActivity(intent);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        timer.start();
     }
+
 
     /**
      * This is the callback from the TTS engine check, if a TTS is installed we
@@ -374,6 +384,16 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
         } else {
             Log.e("TTS", "Initilization Failed!");
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        mGestureDetector.onTouchEvent(event);
+
+        return super.onTouchEvent(event);
+
+
     }
 
     class Android_Gesture_Detector implements GestureDetector.OnGestureListener,
@@ -515,15 +535,5 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
             return true;
 
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-        mGestureDetector.onTouchEvent(event);
-
-        return super.onTouchEvent(event);
-
-
     }
 }
