@@ -16,18 +16,18 @@ import java.util.Locale;
 
 
 // branch comment
+// anoter comment in branch
+// another comment also
 public class InsightHomeActivity  extends Activity implements TextToSpeech.OnInitListener {
 
+    // This code can be any value you want, its just a checksum.
+    private static final int MY_DATA_CHECK_CODE = 1234;
     public static String lastCommand  = null;
-
     private int start=-1;  // main items counter variable
     private TextView name; // text view variable
     private String [] options = new String[] { "sd","cal","ms","n","gm","lm" }; // String array for components
     private GestureDetector mGestureDetector; // Gesture Detector variable
-
     private TextToSpeech tts; // text to speech variable
-    // This code can be any value you want, its just a checksum.
-    private static final int MY_DATA_CHECK_CODE = 1234;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +196,29 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
 
         return super.onTouchEvent(event);
 
+    }
+
+    public void viewText(int no) {
+        if (no == 0 || no == -1) {
+            name.setText("Speed Dialler");
+            speakWords("Speed Dialler");
+
+        } else if (no == 1) {
+            name.setText("Calculator");
+            speakWords("Calculator");
+        } else if (no == 2) {
+            name.setText("Navigation Base Service");
+            speakWords("Navigation Base Service");
+        } else if (no == 3) {
+            name.setText("Messenger");
+            speakWords("Messenger");
+        } else if (no == 4) {
+            name.setText("Learning Module");
+            speakWords("Learning Module");
+        } else if (no == 5) {
+            name.setText("Game");
+            speakWords("Game");
+        }
     }
 
     class Android_Gesture_Detector implements GestureDetector.OnGestureListener,
@@ -396,39 +419,5 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
 
         }
 
-    }
-    public void viewText(int no)
-    {
-        if(no==0 || no==-1)
-        {
-            name.setText("Speed Dialler");
-            speakWords("Speed Dialler");
-
-        }
-        else if(no==1)
-        {
-            name.setText("Calculator");
-            speakWords("Calculator");
-        }
-        else if(no==2)
-        {
-            name.setText("Navigation Base Service");
-            speakWords("Navigation Base Service");
-        }
-        else if(no==3)
-        {
-            name.setText("Messenger");
-            speakWords("Messenger");
-        }
-        else if(no==4)
-        {
-            name.setText("Learning Module");
-            speakWords("Learning Module");
-        }
-        else if(no==5)
-        {
-            name.setText("Game");
-            speakWords("Game");
-        }
     }
 }
