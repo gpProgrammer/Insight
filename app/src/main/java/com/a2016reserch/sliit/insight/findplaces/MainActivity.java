@@ -20,20 +20,17 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+// add a comment into Test Branch
 public class MainActivity extends Activity implements LocationListener, TextToSpeech.OnInitListener {
-    private LocationManager locationManager;
-    private String provider;
-
-    private GestureDetector mGestureDetector;
-    private GestureDetectorCompat gestureDetector;
-
-    private TextToSpeech tts;
     // This code can be any value you want, its just a checksum.
     private static final int MY_DATA_CHECK_CODE = 1234;
-
     String addressField = "not available";
-
     Location location = null;
+    private LocationManager locationManager;
+    private String provider;
+    private GestureDetector mGestureDetector;
+    private GestureDetectorCompat gestureDetector;
+    private TextToSpeech tts;
 
     /**
      * Called when the activity is first created.
@@ -376,6 +373,16 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
         }
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        mGestureDetector.onTouchEvent(event);
+
+        return super.onTouchEvent(event);
+
+
+    }
+
     class Android_Gesture_Detector implements GestureDetector.OnGestureListener,
             GestureDetector.OnDoubleTapListener {
 
@@ -515,15 +522,5 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
             return true;
 
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-        mGestureDetector.onTouchEvent(event);
-
-        return super.onTouchEvent(event);
-
-
     }
 }
