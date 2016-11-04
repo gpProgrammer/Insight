@@ -25,6 +25,7 @@ public class DBHelper {
     private SQLiteDatabase mDb;
     private final Context mCtx;
 
+    // Testing comment
     // Table Names
     private static final String TABLE_QUESTIONS = "questions_table";
     private static final String TABLE_QUESTIONS_EASY = "questions_table_easy";
