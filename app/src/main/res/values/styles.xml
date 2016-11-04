@@ -8,4 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SplashThemeGame" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_learn</item>
+    </style>
+
+    <style name="SplashThemeGaming" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_game</item>
+    </style>
+
+
 </resources>

@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.a2016reserch.sliit.insight">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
     <!-- ACCESS_FINE_LOCATION, Which includes both ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- Add INTERNET permission to getting network based location -->
@@ -21,13 +22,71 @@
             </intent-filter>
         </activity>
         <activity android:name=".findplaces.MainActivity" />
-        <activity android:name=".findplaces.GetBusHaltsActivity">
-
-        </activity>
-        <activity android:name=".findplaces.GetNearestActivity">
-
-        </activity>
-        <activity android:name=".findplaces.WalkingDirectionActivity"></activity>
+        <activity android:name=".findplaces.GetBusHaltsActivity" />
+        <activity android:name=".findplaces.GetNearestActivity" />
+        <activity android:name=".findplaces.WalkingDirectionActivity" />
+        <activity
+            android:name=".learning_module.SplashScreen_LearningModule"
+            android:theme="@style/SplashThemeGame" />
+        <activity android:name=".learning_module.help_keypad.MainMenu_LearningModule" />
+        <activity android:name=".learning_module.help_keypad.Intro_Keypad_Top" />
+        <activity android:name=".learning_module.help_keypad.Braille_Tutorials" />
+        <activity android:name=".learning_module.help_keypad.Intro_Keypad_Middle" />
+        <activity android:name=".learning_module.help_keypad.Intro_Keypad_Bottom" />
+        <activity android:name=".learning_module.help_keypad.MiddleScreenLeftRight" />
+        <activity android:name=".learning_module.help_keypad.BottomScreenLeftRight" />
+        <activity android:name=".learning_module.help_keypad.TopScreenLeftRight" />
+        <activity android:name=".learning_module.help_keypad.Braille_Keypad" />
+        <activity android:name=".learning_module.numbers.Number_One" />
+        <activity android:name=".learning_module.numbers.Number_Zero" />
+        <activity android:name=".learning_module.numbers.Number_Two" />
+        <activity android:name=".learning_module.numbers.Number_Three" />
+        <activity android:name=".learning_module.numbers.Number_Four" />
+        <activity android:name=".learning_module.numbers.Number_Five" />
+        <activity android:name=".learning_module.numbers.Number_Six" />
+        <activity android:name=".learning_module.numbers.Number_Seven" />
+        <activity android:name=".learning_module.numbers.Number_Eight" />
+        <activity android:name=".learning_module.numbers.Number_Nine" />
+        <activity android:name=".learning_module.english_alphabet.Letter_A" />
+        <activity android:name=".learning_module.english_alphabet.Letter_B" />
+        <activity android:name=".learning_module.english_alphabet.Letter_C" />
+        <activity android:name=".learning_module.english_alphabet.Letter_D" />
+        <activity android:name=".learning_module.english_alphabet.Letter_E" />
+        <activity android:name=".learning_module.english_alphabet.Letter_F" />
+        <activity android:name=".learning_module.english_alphabet.Letter_G" />
+        <activity android:name=".learning_module.english_alphabet.Letter_H" />
+        <activity android:name=".learning_module.english_alphabet.Letter_I" />
+        <activity android:name=".learning_module.english_alphabet.Letter_J" />
+        <activity android:name=".learning_module.english_alphabet.Letter_K" />
+        <activity android:name=".learning_module.english_alphabet.Letter_L" />
+        <activity android:name=".learning_module.english_alphabet.Letter_M" />
+        <activity android:name=".learning_module.english_alphabet.Letter_N" />
+        <activity android:name=".learning_module.english_alphabet.Letter_O" />
+        <activity android:name=".learning_module.english_alphabet.Letter_Q" />
+        <activity android:name=".learning_module.english_alphabet.Letter_P" />
+        <activity android:name=".learning_module.english_alphabet.Letter_R" />
+        <activity android:name=".learning_module.english_alphabet.Letter_S" />
+        <activity android:name=".learning_module.english_alphabet.Letter_T" />
+        <activity android:name=".learning_module.english_alphabet.Letter_U" />
+        <activity android:name=".learning_module.english_alphabet.Letter_V" />
+        <activity android:name=".learning_module.english_alphabet.Letter_W" />
+        <activity android:name=".learning_module.english_alphabet.Letter_X" />
+        <activity android:name=".learning_module.english_alphabet.Letter_Y" />
+        <activity android:name=".learning_module.english_alphabet.Letter_Z" />
+        <activity android:name=".learning_module.punctuation_marks.Operator_Dot" />
+        <activity android:name=".learning_module.punctuation_marks.Operator_Comma" />
+        <activity android:name=".learning_module.punctuation_marks.Operator_Ampersand" />
+        <activity android:name=".learning_module.punctuation_marks.Operator_Asterisks" />
+        <activity android:name=".learning_module.punctuation_marks.Operator_Exclamation" />
+        <activity android:name=".learning_module.punctuation_marks.Operator_Plus" />
+        <activity android:name=".learning_module.punctuation_marks.Operator_Minus" />
+        <activity android:name=".learning_module.Braille_Keypad" />
+        <activity android:name=".gaming_module.view_questions" />
+        <activity android:name=".gaming_module.view_marks" />
+        <activity
+            android:name=".gaming_module.Splash_Screen_Game"
+            android:theme="@style/SplashThemeGaming"></activity>
+        <activity android:name=".gaming_module.MainMenu_GamingModule"></activity>
     </application>
 
 </manifest>
