@@ -11,6 +11,9 @@ public class Questions {
     private String Difficulty;
     private int sequence;
 
+    public Questions() {
+    }
+
     public Questions(int quizId, String question, String answers, String difficulty, int sequence) {
         this.quizId = quizId;
         Question = question;
