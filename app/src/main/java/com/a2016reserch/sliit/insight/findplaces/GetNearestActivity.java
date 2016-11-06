@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.a2016reserch.sliit.insight.R;
@@ -43,12 +45,26 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
 
     private static final String TAG = "GetNearestActivity";
 
+    static ArrayList<String> nearestList;
+    // GpsLocation class
+    GpsLocation gpsLocation;
+
+    Location location;
+
+    ViewGroup viewGroup = null;
+    private static String  selected = null;
+
+
     private TextToSpeech tts;
     // This code can be any value you want, its just a checksum.
     private static final int MY_DATA_CHECK_CODE = 1234;
 
     private GestureDetector mGestureDetector;
     private GestureDetectorCompat gestureDetector;
+    private boolean isListEmpty = false;
+    private boolean isCanGoUp = false;
+    private boolean isCanGoDown = false;
+    private int readCount = -2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +80,8 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
         Intent checkIntent = new Intent();
         checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
+
+        nearestList = new ArrayList<String>();
 
         Thread logoTimer = new Thread() {
             public void run() {
@@ -225,6 +243,7 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
             }
         }
     }
+
     private void speakWords(String speech) {
 
         // speak straight away
@@ -252,13 +271,45 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             Log.d("Gesture ", " onSingleTapConfirmed");
+            if(selected != null)
+            {
+                Toast.makeText(GetNearestActivity.this, "You have selected " + selected ,
+                        Toast.LENGTH_LONG).show();
+                speakWords("You have selected " + selected + ", wait a movement!");
+                gpsLocation = new GpsLocation(GetNearestActivity.this);
+
+                // check if GPS enabled
+                if (gpsLocation.canGetLocation()) {
+
+                    try {
+                        selectData(viewGroup);
+                        selected = null;
+                    } catch (Exception e1) {
+                        speakWords("Data not available");
+                    }
+
+                } else {
+                    //TODO activate gpsLocation automaticall
+                    // can't get location
+                    // GPS or Network is not enabled
+                    // Ask user to enable GPS/network in settings
+                    gpsLocation.showSettingsAlert();
+
+                }
+            }
+            else
+            {
+                speakWords("You have nothing select yet!");
+            }
+
             return true;
         }
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             Log.d("Gesture ", " onSingleTapUp");
-            //speakWords("single tap");
+
+
             return true;
         }
 
@@ -270,6 +321,28 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             Log.d("Gesture ", " onDoubleTap");
+
+            //selected = null;
+            gpsLocation = new GpsLocation(GetNearestActivity.this);
+
+            // check if GPS enabled
+            if (gpsLocation.canGetLocation()) {
+
+                try {
+                    retrieveSampleData(viewGroup);
+                    selected = null;
+                } catch (Exception e1) {
+                    speakWords("Data not available");
+                }
+
+            } else {
+                //TODO activate gpsLocation automaticall
+                // can't get location
+                // GPS or Network is not enabled
+                // Ask user to enable GPS/network in settings
+                gpsLocation.showSettingsAlert();
+
+            }
             return true;
         }
 
@@ -337,10 +410,72 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
             if (e1.getY() < e2.getY()) {
                 Log.d("Gesture ", "Up to Down swipe: " + e1.getX() + " - " + e2.getX());
                 Log.d("Speed ", String.valueOf(velocityY) + " pixels/second");
+                if (e1.getAction() == MotionEvent.ACTION_DOWN) {
+
+                    if (isListEmpty) {
+                        isCanGoUp = true;
+
+                        if (isCanGoDown) {
+
+                            readCount++;
+
+                            if (readCount >= 0 && readCount < nearestList.size()) {
+
+                                speakWords(nearestList.get(readCount));
+                                selected = nearestList.get(readCount);
+
+                            } else {
+                                //speakWords("bus stops List is empty, Swipe up");
+                                isCanGoDown = false;
+                                readCount = nearestList.size();
+
+                            }
+                        } else {
+                            speakWords("nearest Place List is empty, Swipe up to go through the downloaded nearest List");
+                        }
+                    }
+                    else
+                    {
+                        speakWords("Double tap to get nearest Places");
+                    }
+
+                }
             }
             if (e1.getY() > e2.getY()) {
                 Log.d("Gesture ", "Down to Up swipe: " + e1.getX() + " - " + e2.getX());
                 Log.d("Speed ", String.valueOf(velocityY) + " pixels/second");
+
+                if (e1.getAction() == MotionEvent.ACTION_DOWN) {
+
+                    if (isListEmpty) {
+
+                        isCanGoDown = true;
+
+                        if (isCanGoUp) {
+
+                            readCount--;
+
+                            if (readCount >= 0 && readCount < nearestList.size()) {
+
+
+                                speakWords(nearestList.get(readCount));
+                                selected = nearestList.get(readCount);
+
+                            } else {
+                                isCanGoUp = false;
+                                readCount = -1;
+
+                            }
+                        } else {
+                            speakWords("nearest Place List is empty, Swipe down to go through the downloaded nearest List");
+                        }
+                    }
+                    else
+                    {
+                        speakWords("Double tap to get nearest Places");
+                    }
+
+                }
             }
             return true;
 
@@ -351,37 +486,40 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
 
     public void retrieveSampleData(View vw) {
 
-        String sampleURL = SERVICE_URL + "/myresource2";
+        double latitude = 0.0;
+        double longitude = 0.0;
+        // check if GPS enabled
+        if (gpsLocation.canGetLocation()) {
+
+            location = gpsLocation.getLocation();
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }
+
+        String getURL = SERVICE_URL + "/getNearestPlaces/"+longitude+"/"+latitude+"/"; // put suitable path and edit this in web service also
 
         WebServiceTask wst = new WebServiceTask(WebServiceTask.GET_TASK, this, "Getting data...");
 
-        wst.execute(new String[]{sampleURL});
+        wst.execute(new String[]{getURL});
 
     }
-    public void postData(View vw) {
+    public void selectData(View vw) {
 
-        // create class object
-        GpsLocation gps = new GpsLocation();
-        WebServiceTask wst = new WebServiceTask(WebServiceTask.POST_TASK, this, "Posting data...");
-
+        double latitude = 0.0;
+        double longitude = 0.0;
         // check if GPS enabled
-        if (gps.canGetLocation()) {
+        if (gpsLocation.canGetLocation()) {
 
-            double latitude = gps.getLatitude();
-            double longitude = gps.getLongitude();
-
-            wst.addNameValuePair("CurrentLongitude", latitude + "");
-            wst.addNameValuePair("CurrentLatitude", longitude + "");
-
-        } else {
-            // can't get location
-            // GPS or Network is not enabled
-            // Ask user to enable GPS/network in settings
-            gps.showSettingsAlert();
+            location = gpsLocation.getLocation();
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
         }
 
-        // the passed String is the URL we will POST to
-        wst.execute(new String[]{SERVICE_URL});
+        String getURL = SERVICE_URL + "/getSortedPath/"+longitude+"/"+latitude+"/"+selected+"/"; // put suitable path and edit this in web service also
+
+        WebServiceTask wst = new WebServiceTask(WebServiceTask.GET_TASK, this, "Getting data...");
+
+        wst.execute(new String[]{getURL});
     }
     // To handle response..
     public void handleResponse(String response) {
@@ -390,9 +528,29 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
 
             Gson googleJson = new Gson();
             ArrayList jsonObjList = googleJson.fromJson(response, ArrayList.class);
+            if(jsonObjList.size() == 0)
+            {
+                speakWords("Sorry , There are no any Places within 500 meters ");
+                isListEmpty = false;
+                isCanGoUp = false;
+                isCanGoDown = false;
+                readCount = -2;
+            }
+            else {
 
-            Toast.makeText(GetNearestActivity.this, "response sise = " + jsonObjList.size(),
-                    Toast.LENGTH_LONG).show();
+                isListEmpty = true;
+                isCanGoUp = true;
+                isCanGoDown = true;
+                readCount = -1;
+
+                Toast.makeText(GetNearestActivity.this, "response sise = " + jsonObjList.size(),
+                        Toast.LENGTH_LONG).show();
+                speakWords("You have " + jsonObjList.size() + " places within 500 meters.., select one of them");
+                for (int i = 0; i < jsonObjList.size(); i++) {
+                    nearestList.add(jsonObjList.get(i).toString());
+                }
+            }
+
 
         } catch (Exception e) {
             Log.e(TAG, e.getLocalizedMessage(), e);
@@ -401,6 +559,7 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
 
     private class WebServiceTask extends AsyncTask<String, Integer, String> {
 
+        HttpResponse isResponse = null;
         public static final int POST_TASK = 1;
         public static final int GET_TASK = 2;
 
@@ -442,15 +601,36 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
         @Override
         protected void onPreExecute() {
 
-            showProgressDialog();
+
+            showProgressDialog(); //  display a progress dialog.
+
 
         }
 
         @Override
         protected void onPostExecute(String response) {
 
-            handleResponse(response);
-            pDlg.dismiss();
+            if(response != null) {
+                Thread timer = new Thread() {
+                    public void run() {
+                        try {
+                            sleep(1500);
+
+                            pDlg.dismiss(); //  remove the progress dialog.
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                timer.start();
+
+                handleResponse(response);
+            }
+            else
+            {
+                speakWords("server is not responding, Activate mobile data ");
+                pDlg.dismiss(); //  remove the progress dialog.
+            }
 
         }
 
@@ -487,6 +667,7 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
                         httppost.setEntity(new UrlEncodedFormEntity(params));
 
                         response = httpclient.execute(httppost);
+                        isResponse = response;
                         break;
                     case GET_TASK:
                         HttpGet httpget = new HttpGet(url);

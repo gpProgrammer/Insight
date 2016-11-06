@@ -478,29 +478,8 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
                 Log.d("Gesture ", "Right to Left swipe: " + e1.getX() + " - " + e2.getX());
                 Log.d("Speed ", String.valueOf(velocityX) + " pixels/second");
 
-//                onDestroy();
-//
-//                gpsLocation = new GpsLocation(GetBusHaltsActivity.this);
-//
-//                // check if GPS enabled
-//                if (gpsLocation.canGetLocation()) {
-//
-//                    double latitude = gpsLocation.getLatitude();
-//                    double longitude = gpsLocation.getLongitude();
-//                    retrieveSampleData(viewGroup);
-//                    // \n is for new line
-//                    Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
-//                } else {
-//                    //TODO activate gpsLocation automaticall
-//                    // can't get location
-//                    // GPS or Network is not enabled
-//                    // Ask user to enable GPS/network in settings
-//                    gpsLocation.showSettingsAlert();
-//
-//                }
-
-                //postData(viewGroup);
             }
+
             if (e1.getY() < e2.getY()) {
                 Log.d("Gesture ", "Up to Down swipe: " + e1.getX() + " - " + e2.getX());
                 Log.d("Speed ", String.valueOf(velocityY) + " pixels/second");
@@ -579,7 +558,7 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
     }
 
 
-    // call this foe get method
+    // call this for get method
     public void retrieveSampleData(View vw) {
 
         // create class object
@@ -597,8 +576,6 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
         String getURL = SERVICE_URL + "/getNearestbusHalts/"+longitude+"/"+latitude+"/"; // put suitable path and edit this in web service also
 
         WebServiceTask wst = new WebServiceTask(WebServiceTask.GET_TASK, this, "Getting data...");
-//        wst.addNameValuePair("CurrentLongitude", longitude + "");
-//        wst.addNameValuePair("CurrentLatitude",  latitude + "");
 
         wst.execute(new String[]{getURL});
 
@@ -833,22 +810,28 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
          */
         @Override
         protected void onPostExecute(final String response) {
-            Thread timer = new Thread(){
-                public void run()
-                {
-                    try{
-                        sleep(1500);
 
-                        pDlg.dismiss(); //  remove the progress dialog.
-                    }
-                    catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            timer.start();
+            if(response != null) {
+                Thread timer = new Thread() {
+                    public void run() {
+                        try {
+                            sleep(1500);
 
-            handleResponse(response);
+                            pDlg.dismiss(); //  remove the progress dialog.
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                timer.start();
+
+                handleResponse(response);
+            }
+            else
+            {
+                speakWords("server is not responding, Activate mobile data ");
+                pDlg.dismiss(); //  remove the progress dialog.
+            }
         }
     }
 
