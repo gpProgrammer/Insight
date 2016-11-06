@@ -68,7 +68,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 
                     sleep(1500);
                     speakWords("Welcome! to navigation services");
-                    sleep(3000);
+                    sleep(2500);
                     speakWords("Long press to get help");
 
 
@@ -128,6 +128,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         if (tts != null)
         {
             tts.stop();
+            tts.shutdown();
         }
         super.onStop();
 
@@ -158,7 +159,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         if (tts != null)
         {
             tts.stop();
-            //tts.shutdown();
+            tts.shutdown();
         }
         gpsLocation.stopUsingGPS();
         super.onDestroy();

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -42,7 +43,7 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
 
     private static final String SERVICE_URL = "http://localhost:8085/navigation/webapi/myresource";
 
-    private static final String TAG = "GetNearestActivity";
+    private static final String TAG = "BusHaltsActivity";
 
     private TextToSpeech tts;
     // This code can be any value you want, its just a checksum.
@@ -51,9 +52,15 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
     ViewGroup viewGroup = null;
 
     int readCount = -2;
+    boolean isCanGoDown = false;
+    boolean isCanGoUp = false;
+    boolean isListEmpty = false;
+    String selected = null;
 
     // GpsLocation class
-    GpsLocation gps;
+    GpsLocation gpsLocation;
+
+    Location location;
 
     private GestureDetector mGestureDetector;
     private GestureDetectorCompat gestureDetector;
@@ -180,6 +187,7 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
         if (tts != null)
         {
             tts.stop();
+            tts.shutdown();
         }
         super.onDestroy();
     }
@@ -244,8 +252,9 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
             }
         }
     }
+
     private void speakWords(String speech) {
-// speak straight away
+        // speak straight away
         if (tts != null) {
             tts.setSpeechRate(1);
             //tts.speak(speech, TextToSpeech.QUEUE_ADD, null);
@@ -255,8 +264,6 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
 
         }
     }
-
-
 
     // Android_Gesture_Detector Class
     class Android_Gesture_Detector implements GestureDetector.OnGestureListener,
@@ -275,104 +282,104 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
             return true;
         }
 
-        String selected = null;
+
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             Log.d("Gesture ", " onSingleTapUp");
 
-            if(selected != null)
-            {
-//                if(selected == "Welivita")
-//                {
-//                    //TODO give route
+//            if(selected != null)
+//            {
+////                if(selected == "Welivita")
+////                {
+////                    //TODO give route
+////                }
+//
+//                if("Welivita bus stop, Kaduwela".equals(selected)) {
+//                    Thread logoTimer = new Thread() {
+//                        public void run() {
+//                            try {
+//
+//                                sleep(1000);
+//                                speakWords("You have selected, " + selected + " calculating route.");
+//
+//                                speakWords("Toward S l i i t open area foot path");
+//                                sleep(1000);
+//                                speakWords("Turn left");
+//                                speakWords("Turn right onto S l i i t  entrance ");
+//                                sleep(1000);
+//                                speakWords("Turn left");
+//                                speakWords("Turn right onto S l i i t  entrance");
+//                                speakWords("Turn right onto 177, Kaduwela kollupitiya road ");
+//
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    };
+//
+//                    logoTimer.start();
+//
 //                }
+//                else if("Gemunupura Bus Stop, Malabe".equals(selected))
+//                {
+//                    Thread logoTimer = new Thread() {
+//                        public void run() {
+//                            try {
+//
+//                                sleep(1000);
+//                                speakWords("You have selected, " + selected + " calculating route.");
+//
+//                                speakWords("Toward S l i i t open area foot path");
+//                                sleep(1000);
+//                                speakWords("Turn left");
+//                                speakWords("Turn right onto S l i i t  entrance ");
+//                                sleep(1000);
+//                                speakWords("Turn left");
+//                                speakWords("Turn right onto S l i i t  entrance");
+//                                speakWords("Turn right onto Kaduwela kollupitiya road");
+//
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    };
+//
+//                    logoTimer.start();
+//
+//                }
+//
+//
+//                else if("Campus Bus Stop".equals(selected) )
+//                {
+//                    Thread logoTimer = new Thread() {
+//                        public void run() {
+//                            try {
+//
+//                                sleep(1000);
+//                                speakWords("You have selected, " + selected + " calculating route.");
+//
+//                                speakWords("Toward S l i i t open area foot path");
+//                                sleep(1000);
+//                                speakWords("Turn left");
+//                                speakWords("Turn right onto S l i i t  entrance ");
+//
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    };
+//
+//                    logoTimer.start();
+//
+//                }
+//                else
+//                {
+//                    speakWords("Sorry, route not founded");
+//                }
+//
+//            }
 
-                if("Welivita bus stop, Kaduwela".equals(selected)) {
-                    Thread logoTimer = new Thread() {
-                        public void run() {
-                            try {
-
-                                sleep(1000);
-                                speakWords("You have selected, " + selected + " calculating route.");
-
-                                speakWords("Toward S l i i t open area foot path");
-                                sleep(1000);
-                                speakWords("Turn left");
-                                speakWords("Turn right onto S l i i t  entrance ");
-                                sleep(1000);
-                                speakWords("Turn left");
-                                speakWords("Turn right onto S l i i t  entrance");
-                                speakWords("Turn right onto 177, Kaduwela kollupitiya road ");
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-
-                    logoTimer.start();
-
-                }
-                else if("Gemunupura Bus Stop, Malabe".equals(selected))
-                {
-                    Thread logoTimer = new Thread() {
-                        public void run() {
-                            try {
-
-                                sleep(1000);
-                                speakWords("You have selected, " + selected + " calculating route.");
-
-                                speakWords("Toward S l i i t open area foot path");
-                                sleep(1000);
-                                speakWords("Turn left");
-                                speakWords("Turn right onto S l i i t  entrance ");
-                                sleep(1000);
-                                speakWords("Turn left");
-                                speakWords("Turn right onto S l i i t  entrance");
-                                speakWords("Turn right onto Kaduwela kollupitiya road");
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-
-                    logoTimer.start();
-
-                }
-
-
-                else if("Campus Bus Stop".equals(selected) )
-                {
-                    Thread logoTimer = new Thread() {
-                        public void run() {
-                            try {
-
-                                sleep(1000);
-                                speakWords("You have selected, " + selected + " calculating route.");
-
-                                speakWords("Toward S l i i t open area foot path");
-                                sleep(1000);
-                                speakWords("Turn left");
-                                speakWords("Turn right onto S l i i t  entrance ");
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-
-                    logoTimer.start();
-
-                }
-                else
-                {
-                    speakWords("Sorry, route not founded");
-                }
-
-            }
-
-            return false;
+            return true;
         }
 
         @Override
@@ -383,23 +390,15 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             Log.d("Gesture ", " onDoubleTap");
-            selected = null;
 
-
-            return true;
-        }
-
-        @Override
-        public boolean onDoubleTapEvent(MotionEvent e) {
-            Log.d("Gesture ", " onDoubleTapEvent");
-            selected = null;
-            gps = new GpsLocation(GetBusHaltsActivity.this);
+            //selected = null;
+            gpsLocation = new GpsLocation(GetBusHaltsActivity.this);
 
             // check if GPS enabled
-            if (gps.canGetLocation()) {
+            if (gpsLocation.canGetLocation()) {
 
-                double latitude = gps.getLatitude();
-                double longitude = gps.getLongitude();
+                double latitude = gpsLocation.getLatitude();
+                double longitude = gpsLocation.getLongitude();
                 try {
                     retrieveSampleData(viewGroup);
                     selected = null;
@@ -407,15 +406,22 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
                     speakWords("Data not available");
                 }
 
-                readCount = -1;
             } else {
-                //TODO activate gps automaticall
+                //TODO activate gpsLocation automaticall
                 // can't get location
                 // GPS or Network is not enabled
                 // Ask user to enable GPS/network in settings
-                gps.showSettingsAlert();
+                gpsLocation.showSettingsAlert();
 
             }
+
+            return true;
+        }
+
+        @Override
+        public boolean onDoubleTapEvent(MotionEvent e) {
+            Log.d("Gesture ", " onDoubleTapEvent");
+
             return true;
         }
 
@@ -474,22 +480,22 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
 
 //                onDestroy();
 //
-//                gps = new GpsLocation(GetBusHaltsActivity.this);
+//                gpsLocation = new GpsLocation(GetBusHaltsActivity.this);
 //
 //                // check if GPS enabled
-//                if (gps.canGetLocation()) {
+//                if (gpsLocation.canGetLocation()) {
 //
-//                    double latitude = gps.getLatitude();
-//                    double longitude = gps.getLongitude();
+//                    double latitude = gpsLocation.getLatitude();
+//                    double longitude = gpsLocation.getLongitude();
 //                    retrieveSampleData(viewGroup);
 //                    // \n is for new line
 //                    Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
 //                } else {
-//                    //TODO activate gps automaticall
+//                    //TODO activate gpsLocation automaticall
 //                    // can't get location
 //                    // GPS or Network is not enabled
 //                    // Ask user to enable GPS/network in settings
-//                    gps.showSettingsAlert();
+//                    gpsLocation.showSettingsAlert();
 //
 //                }
 
@@ -501,14 +507,30 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
 
                 if (e1.getAction() == MotionEvent.ACTION_DOWN) {
 
-                    readCount++;
+                    if (isListEmpty) {
+                        isCanGoUp = true;
 
-                    if (readCount >= 0 && readCount < readList.size()) {
+                        if (isCanGoDown) {
 
-                        speakWords(readList.get(readCount));
-                        selected = readList.get(readCount);
+                            readCount++;
 
-                    } else {
+                            if (readCount >= 0 && readCount < readList.size()) {
+
+                                speakWords(readList.get(readCount));
+                                selected = readList.get(readCount);
+
+                            } else {
+                                //speakWords("bus stops List is empty, Swipe up");
+                                isCanGoDown = false;
+                                readCount = readList.size();
+
+                            }
+                        } else {
+                            speakWords("bus stops List is empty, Swipe up to go through the downloaded nearest List");
+                        }
+                    }
+                    else
+                    {
                         speakWords("Double tap to get nearest bus stops");
                     }
 
@@ -519,28 +541,37 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
                 Log.d("Gesture ", "Down to Up swipe: " + e1.getX() + " - " + e2.getX());
                 Log.d("Speed ", String.valueOf(velocityY) + " pixels/second");
 
+
                 if (e1.getAction() == MotionEvent.ACTION_DOWN) {
 
-                    readCount--;
+                    if (isListEmpty) {
 
-                    if (readCount >= 0 && readCount < readList.size()) {
+                        isCanGoDown = true;
+
+                        if (isCanGoUp) {
+
+                            readCount--;
+
+                            if (readCount >= 0 && readCount < readList.size()) {
 
 
-                        speakWords(readList.get(readCount));
-                        selected = readList.get(readCount);
+                                speakWords(readList.get(readCount));
+                                selected = readList.get(readCount);
 
-                    }else {
+                            } else {
+                                isCanGoUp = false;
+                                readCount = -1;
+
+                            }
+                        } else {
+                            speakWords("bus stops List is empty, Swipe down to go through the downloaded nearest List");
+                        }
+                    }
+                    else
+                    {
                         speakWords("Double tap to get nearest bus stops");
                     }
 
-//                    if (readCount > readList.size()) {
-//                        speakWords("You have access all list, double tap to get bus halts again ");
-//
-//                    }
-//                    if (readCount < -1) {
-//                        speakWords("You have access all list, double tap to get bus halts again ");
-//
-//                    }
                 }
             }
             return true;
@@ -552,14 +583,15 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
     public void retrieveSampleData(View vw) {
 
         // create class object
-        GpsLocation gps = new GpsLocation(GetBusHaltsActivity.this);
+
         double latitude = 0.0;
         double longitude = 0.0;
         // check if GPS enabled
-        if (gps.canGetLocation()) {
+        if (gpsLocation.canGetLocation()) {
 
-            latitude = gps.getLatitude();
-            longitude = gps.getLongitude();
+            location = gpsLocation.getLocation();
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
         }
 
         String getURL = SERVICE_URL + "/getNearestbusHalts/"+longitude+"/"+latitude+"/"; // put suitable path and edit this in web service also
@@ -574,31 +606,31 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
 
     public void postData(View vw) {
 
-        String postURL = SERVICE_URL + "/postLon_Lat"; // put suitable path and edit this in web service also
-
-        // create class object
-        GpsLocation gps = new GpsLocation(GetBusHaltsActivity.this);
-        WebServiceTask wst = new WebServiceTask(WebServiceTask.POST_TASK, this, "Posting data...");
-
-        // check if GPS enabled
-        if (gps.canGetLocation()) {
-
-            double latitude = gps.getLatitude();
-            double longitude = gps.getLongitude();
-
-            wst.addNameValuePair("CurrentLongitude", longitude + "");
-            wst.addNameValuePair("CurrentLatitude",  latitude + "");
-
-        } else {
-            // can't get location
-            // GPS or Network is not enabled
-            // Ask user to enable GPS/network in settings
-            //TODO Strat GPS and Mobile data automatically
-            gps.showSettingsAlert();
-        }
-
-        // the passed String is the URL we will POST to
-        wst.execute(new String[]{postURL});
+//        String postURL = SERVICE_URL + "/postLon_Lat"; // put suitable path and edit this in web service also
+//
+//        // create class object
+//        GpsLocation gps = new GpsLocation(GetBusHaltsActivity.this);
+//        WebServiceTask wst = new WebServiceTask(WebServiceTask.POST_TASK, this, "Posting data...");
+//
+//        // check if GPS enabled
+//        if (gps.canGetLocation()) {
+//
+//            double latitude = gps.getLatitude();
+//            double longitude = gps.getLongitude();
+//
+//            wst.addNameValuePair("CurrentLongitude", longitude + "");
+//            wst.addNameValuePair("CurrentLatitude",  latitude + "");
+//
+//        } else {
+//            // can't get location
+//            // GPS or Network is not enabled
+//            // Ask user to enable GPS/network in settings
+//            //TODO Strat GPS and Mobile data automatically
+//            gps.showSettingsAlert();
+//        }
+//
+//        // the passed String is the URL we will POST to
+//        wst.execute(new String[]{postURL});
     }
 
     // To handle response..
@@ -611,12 +643,24 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
             if(jsonObjList.size() == 0)
             {
                 speakWords("Sorry , There are no any bus halts within 500 meters ");
+                isListEmpty = false;
+                isCanGoUp = false;
+                isCanGoDown = false;
+                readCount = -2;
             }
-            Toast.makeText(GetBusHaltsActivity.this, "response sise = " + jsonObjList.size(),
-                    Toast.LENGTH_LONG).show();
+            else {
 
-            for (int i = 0; i < jsonObjList.size(); i++) {
-                readList.add(jsonObjList.get(i).toString());
+                isListEmpty = true;
+                isCanGoUp = true;
+                isCanGoDown = true;
+                readCount = -1;
+
+                Toast.makeText(GetBusHaltsActivity.this, "response sise = " + jsonObjList.size(),
+                        Toast.LENGTH_LONG).show();
+                speakWords("You have " + jsonObjList.size() + " bus halts within 500 meters");
+                for (int i = 0; i < jsonObjList.size(); i++) {
+                    readList.add(jsonObjList.get(i).toString());
+                }
             }
 
 
@@ -779,6 +823,7 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
         protected void onPreExecute() {
 
             showProgressDialog(); //  display a progress dialog.
+
         }
 
         /**
@@ -787,15 +832,23 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
          * @param response
          */
         @Override
-        protected void onPostExecute(String response) {
+        protected void onPostExecute(final String response) {
+            Thread timer = new Thread(){
+                public void run()
+                {
+                    try{
+                        sleep(1500);
 
-            // speakWords("Wait a moment ");
-            speakWords("Downloading data. ");
+                        pDlg.dismiss(); //  remove the progress dialog.
+                    }
+                    catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            timer.start();
 
             handleResponse(response);
-            pDlg.dismiss(); //  remove the progress dialog.
-
-
         }
     }
 
