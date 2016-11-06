@@ -7,8 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.a2016reserch.sliit.insight.gaming_module.view_questions"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.a2016reserch.sliit.insight.gaming_module.Logic.view_questions">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -103,5 +103,6 @@
             android:background="@drawable/buttons"/>
 
     </LinearLayout>
+
 
 </LinearLayout>

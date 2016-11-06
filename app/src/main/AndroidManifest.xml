@@ -81,12 +81,13 @@
         <activity android:name=".learning_module.punctuation_marks.Operator_Plus" />
         <activity android:name=".learning_module.punctuation_marks.Operator_Minus" />
         <activity android:name=".learning_module.Braille_Keypad" />
-        <activity android:name=".gaming_module.view_questions" />
         <activity android:name=".gaming_module.view_marks" />
         <activity
             android:name=".gaming_module.Splash_Screen_Game"
-            android:theme="@style/SplashThemeGaming"></activity>
-        <activity android:name=".gaming_module.MainMenu_GamingModule"></activity>
+            android:theme="@style/SplashThemeGaming" />
+        <activity android:name=".gaming_module.MainMenu_GamingModule" />
+        <activity android:name=".gaming_module.Logic.view_questions" />
+        <activity android:name=".gaming_module.MainMenu_GameLevels"></activity>
     </application>
 
 </manifest>
