@@ -22,6 +22,10 @@ import android.util.Log;
  */
 public class GpsLocation extends Service implements LocationListener {
 
+    public static double Latitude;
+    public static double Longitude;
+
+
     private final Context lContext;
 
     // Variable for GPS status
@@ -38,10 +42,10 @@ public class GpsLocation extends Service implements LocationListener {
     double longitude; // longitude
 
     // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 5; // 5 meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 3; // 5 meters
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60; // 1/2 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 30; // 1/2 minute
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
@@ -68,6 +72,9 @@ public class GpsLocation extends Service implements LocationListener {
     }
 
     public String getAddressField() {
+
+
+
 
 //        // Check if GPS enabled
 //        if(this.canGetLocation()) {
@@ -263,7 +270,14 @@ public class GpsLocation extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-    this.getLocation();
+    //this.getLocation();
+
+//        // Check if GPS enabled
+//        if(this.canGetLocation()) {
+//
+//             Latitude = location.getLatitude();
+//             Longitude = location.getLongitude();
+//        }
 //        double lat = location.getLatitude();
 //        double lng = location.getLongitude();
 //

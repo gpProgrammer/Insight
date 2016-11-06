@@ -11,6 +11,7 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 import com.a2016reserch.sliit.insight.InsightHomeActivity;
 import com.a2016reserch.sliit.insight.R;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 // add a comment into Test Branch
-public class MainActivity extends Activity implements  TextToSpeech.OnInitListener {
+public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
     // This code can be any value you want, its just a checksum.
     private static final int MY_DATA_CHECK_CODE = 1234;
     String addressField = "not available";
@@ -90,7 +91,7 @@ public class MainActivity extends Activity implements  TextToSpeech.OnInitListen
     protected void onStart() {
         super.onStart();
         // getLocation method in GpsLocation class
-        // location = gpsLocation.getLocation();
+        //location = gpsLocation.getLocation();
 
     }
 
@@ -142,7 +143,8 @@ public class MainActivity extends Activity implements  TextToSpeech.OnInitListen
             // success, create the TTS instance
             tts = new TextToSpeech(this, this);
         }
-
+        // getLocation method in GpsLocation class
+        //location = gpsLocation.getLocation();
         super.onRestart();
 
     }
@@ -158,6 +160,7 @@ public class MainActivity extends Activity implements  TextToSpeech.OnInitListen
             tts.stop();
             //tts.shutdown();
         }
+        gpsLocation.stopUsingGPS();
         super.onDestroy();
 
     }
@@ -223,7 +226,7 @@ public class MainActivity extends Activity implements  TextToSpeech.OnInitListen
         }
     }
 
-//    @Override
+ //   @Override
 //    public void onLocationChanged(Location location) {
 //
 //        double lat = location.getLatitude();
@@ -245,11 +248,13 @@ public class MainActivity extends Activity implements  TextToSpeech.OnInitListen
 //            String latituteField = String.valueOf(lat);
 //            String longitudeField = String.valueOf(lng);
 //            addressField = fnialAddress; //This will display the final address.
+//            Toast.makeText(MainActivity.this, "lat = " + lat + " lng = " + lng + " / " + addressField,
+//                    Toast.LENGTH_LONG).show();
 //
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (NullPointerException e) {
+//        }   catch (IOException ex) {
+//        ex.printStackTrace();
+//        }
+//    catch (NullPointerException e) {
 //            e.printStackTrace();
 //        }
 //    }
@@ -338,76 +343,39 @@ public class MainActivity extends Activity implements  TextToSpeech.OnInitListen
         @Override
         public boolean onDoubleTap(MotionEvent e) {
 
-            if (gpsLocation != null) {
+            location = gpsLocation.getLocation();
 
-                // Check if GPS enabled
-                if(gpsLocation.canGetLocation()) {
+                double lat = location.getLatitude();
+                double lng = location.getLongitude();
 
-                    double lat = gpsLocation.getLatitude();
-                    double lng = gpsLocation.getLongitude();
-                    // addressField = gpsLocation.getAddressField();
-                    Geocoder geoCoder = new Geocoder(MainActivity.this, Locale.getDefault());
-                    StringBuilder builder = new StringBuilder();
-                    try {
-                        List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
-                        int maxLines = address.get(0).getMaxAddressLineIndex();
-                        for (int i = 0; i < maxLines; i++) {
-                            String addressStr = address.get(0).getAddressLine(i);
-                            builder.append(addressStr);
-                            builder.append(" ");
-                        }
-
-                        String fnialAddress = builder.toString(); //This is the complete address.
-
-                        String latituteField = String.valueOf(lat);
-                        String longitudeField = String.valueOf(lng);
-                        addressField = fnialAddress; //This will display the final address.
-
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                        speakWords("turn on mobile data!");
-                        // Can't get location.
-                        // GPS or network is not enabled.
-                        // Ask user to enable GPS/network in settings.
-                        gpsLocation.showSettingsAlert();
-
-                    } catch (NullPointerException ex) {
-                        speakWords("Address is not found! ");
-                        ex.printStackTrace();
+                Geocoder geoCoder = new Geocoder(MainActivity.this, Locale.getDefault());
+                StringBuilder builder = new StringBuilder();
+                try {
+                    List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
+                    int maxLines = address.get(0).getMaxAddressLineIndex();
+                    for (int i = 0; i < maxLines; i++) {
+                        String addressStr = address.get(0).getAddressLine(i);
+                        builder.append(addressStr);
+                        builder.append(" ");
                     }
 
-                    Thread timer = new Thread() {
+                    String fnialAddress = builder.toString(); //This is the complete address.
 
-                        public void run() {
-                            try {
-                                sleep(2000);
-                                //addressField = gpsLocation.getAddressField();
-                                speakWords("Your current location is, " + addressField);
+                    String latituteField = String.valueOf(lat);
+                    String longitudeField = String.valueOf(lng);
+                    addressField = fnialAddress; //This will display the final address.
+                    Toast.makeText(MainActivity.this, "lat = " + lat + " lng = " + lng + " / " + addressField,
+                            Toast.LENGTH_LONG).show();
 
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-                    timer.start();
-
+                }   catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                catch (NullPointerException ex) {
+                    ex.printStackTrace();
                 }
 
-                else {
-                    // Can't get location.
-                    // GPS or network is not enabled.
-                    // Ask user to enable GPS/network in settings.
-                    gpsLocation.showSettingsAlert();
+            speakWords("Your current location is, " + addressField);
 
-                }
-
-
-
-            }
-            else
-            {
-                speakWords("Sorry, Location can not find!");
-            }
             return true;
         }
 
