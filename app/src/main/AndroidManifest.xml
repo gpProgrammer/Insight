@@ -47,7 +47,6 @@
         <activity android:name=".learning_module.numbers.Number_Seven" />
         <activity android:name=".learning_module.numbers.Number_Eight" />
         <activity android:name=".learning_module.numbers.Number_Nine" />
-        <activity android:name=".learning_module.english_alphabet.Letter_A" />
         <activity android:name=".learning_module.english_alphabet.Letter_B" />
         <activity android:name=".learning_module.english_alphabet.Letter_C" />
         <activity android:name=".learning_module.english_alphabet.Letter_D" />
@@ -87,7 +86,8 @@
             android:theme="@style/SplashThemeGaming" />
         <activity android:name=".gaming_module.MainMenu_GamingModule" />
         <activity android:name=".gaming_module.Logic.view_questions" />
-        <activity android:name=".gaming_module.MainMenu_GameLevels"></activity>
+        <activity android:name=".gaming_module.MainMenu_GameLevels" />
+        <activity android:name=".learning_module.english_alphabet.Letter_A"></activity>
     </application>
 
 </manifest>

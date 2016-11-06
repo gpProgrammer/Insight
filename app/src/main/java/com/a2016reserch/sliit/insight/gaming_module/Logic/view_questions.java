@@ -345,7 +345,6 @@ public class view_questions extends Activity implements  TextToSpeech.OnInitList
 
         }
 
-
         dbClass.open();
 
         String[] result = dbClass.getAnswers(qid,passedArg);
@@ -379,7 +378,7 @@ public class view_questions extends Activity implements  TextToSpeech.OnInitList
 
             else
             {
-
+                speakWords("You have given incorrect answer. Game is over");
                 status="incorrect";
                 int finalCount=0;
 
@@ -411,25 +410,25 @@ public class view_questions extends Activity implements  TextToSpeech.OnInitList
                 logoTimer3.start();
 
                 Intent n1 = new Intent(view_questions.this,view_marks.class);
-                n1.putExtra("marks",String.valueOf(finalCount));
+
+                Bundle extras = new Bundle();
+                extras.putString("marks",String.valueOf(finalCount));
+       //         extras.putString("correctanswer",arr.toString());
+                extras.putIntArray("array", arr);
+                n1.putExtras(extras);
                 startActivity(n1);
 
             }
         }
 
-
         if(status=="correct") {
+            speakWords("Well done. You have given correct answer");
             QuzRetrieve();
         }
 
         return true;
     }
 
-    public boolean AddMarks(int id,String difficulty)
-    {
-
-        return true;
-    }
 
     public static void retrieveValuesFromListMethod2(List list)
     {
@@ -441,15 +440,12 @@ public class view_questions extends Activity implements  TextToSpeech.OnInitList
         }
     }
 
-
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
         mGestureDetector.onTouchEvent(event);
 
         return super.onTouchEvent(event);
-
 
     }
     @Override
@@ -524,10 +520,6 @@ public class view_questions extends Activity implements  TextToSpeech.OnInitList
             if (e1.getX() < e2.getX()) {
                 Log.d("Gesture ", "Left to Right swipe: "+ e1.getX() + " - " + e2.getX());
                 Log.d("Speed ", String.valueOf(velocityX) + " pixels/second");
-//
-//                Intent intent = new Intent(view_questions.this, sanda.class);
-//                intent.putExtra("difficulty", passedArg);
-//                startActivity(intent);
 
 
             }
