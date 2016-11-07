@@ -47,7 +47,6 @@
         <activity android:name=".learning_module.numbers.Number_Seven" />
         <activity android:name=".learning_module.numbers.Number_Eight" />
         <activity android:name=".learning_module.numbers.Number_Nine" />
-        <activity android:name=".learning_module.english_alphabet.Letter_A" />
         <activity android:name=".learning_module.english_alphabet.Letter_B" />
         <activity android:name=".learning_module.english_alphabet.Letter_C" />
         <activity android:name=".learning_module.english_alphabet.Letter_D" />
@@ -81,12 +80,14 @@
         <activity android:name=".learning_module.punctuation_marks.Operator_Plus" />
         <activity android:name=".learning_module.punctuation_marks.Operator_Minus" />
         <activity android:name=".learning_module.Braille_Keypad" />
-        <activity android:name=".gaming_module.view_questions" />
         <activity android:name=".gaming_module.view_marks" />
         <activity
             android:name=".gaming_module.Splash_Screen_Game"
-            android:theme="@style/SplashThemeGaming"></activity>
-        <activity android:name=".gaming_module.MainMenu_GamingModule"></activity>
+            android:theme="@style/SplashThemeGaming" />
+        <activity android:name=".gaming_module.MainMenu_GamingModule" />
+        <activity android:name=".gaming_module.Logic.view_questions" />
+        <activity android:name=".gaming_module.MainMenu_GameLevels" />
+        <activity android:name=".learning_module.english_alphabet.Letter_A"></activity>
     </application>
 
 </manifest>

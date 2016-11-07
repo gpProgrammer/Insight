@@ -10,11 +10,12 @@ public class Marks {
     private String status;
     private String difficulty;
 
-    public Marks(int quizId, int marks, String status, String difficulty) {
+    public Marks(int quizId, String difficulty, String status, int marks ) {
         this.quizId = quizId;
-        Marks = marks;
-        this.status = status;
         this.difficulty = difficulty;
+        this.status = status;
+        this.Marks = marks;
+
     }
 
     public int getMarks() {

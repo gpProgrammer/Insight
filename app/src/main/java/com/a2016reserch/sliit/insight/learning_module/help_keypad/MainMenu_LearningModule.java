@@ -235,10 +235,7 @@ public class MainMenu_LearningModule extends Activity implements TextToSpeech.On
                 startActivity(intent);
                 onDestroy();
 
-            } else if (start == 3) {
-
-
-            } else {
+            }else {
                 System.out.println(Integer.toString(start));
                 //  speakWords("invalid");
 

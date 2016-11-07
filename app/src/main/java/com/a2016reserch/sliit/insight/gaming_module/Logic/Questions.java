@@ -11,14 +11,16 @@ public class Questions {
     private String Difficulty;
     private int sequence;
 
-    public Questions(int quizId, String question, String answers, String difficulty, int sequence) {
-        this.quizId = quizId;
-        Question = question;
-        Answers = answers;
-        Difficulty = difficulty;
-        this.sequence = sequence;
+    public Questions() {
     }
 
+    public Questions(int id, String quz, String diff, String answers, int seq) {
+        quizId = id;
+        Question = quz;
+        Difficulty = diff;
+        Answers = answers;
+        sequence = seq;
+    }
     public int getQuizId() {
         return quizId;
     }
