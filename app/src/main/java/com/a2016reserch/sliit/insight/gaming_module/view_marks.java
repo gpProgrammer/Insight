@@ -1,9 +1,8 @@
 package com.a2016reserch.sliit.insight.gaming_module;
 
 import android.app.Activity;
-import android.speech.tts.TextToSpeech;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -54,14 +53,20 @@ public class view_marks extends Activity implements TextToSpeech.OnInitListener 
             count = finalResult / 10;
         }
 
+        VoiceResult();
+
         final Thread logoTimer3 = new Thread() {
             public void run() {
                 try {
-                    sleep(2000);
+                    sleep(3000);
+                    speakWords("You have given incorrect answer. Game is over");
+                    sleep(4000);
                     speakWords("you have answered" + count + "questions");
                     sleep(4000);
                     speakWords("Your got" + finalResult + "marks");
                     sleep(4000);
+
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -70,8 +75,8 @@ public class view_marks extends Activity implements TextToSpeech.OnInitListener 
         };
 
         logoTimer3.start();
+        //VoiceResult();
 
-        VoiceResult();
     }
 
     @Override
@@ -100,9 +105,9 @@ public class view_marks extends Activity implements TextToSpeech.OnInitListener 
             tts.speak(speech, TextToSpeech.QUEUE_FLUSH, null);
         }
 
-        while (tts.isSpeaking()) {
-
-        }
+//        while (tts.isSpeaking()) {
+//
+//        }
     }
 
     public void VoiceResult() {
@@ -123,7 +128,7 @@ public class view_marks extends Activity implements TextToSpeech.OnInitListener 
 //                        speakWords("Your got" + finalResult + "marks");
                         sleep(1000);
                         speakWords("You fall in the category of Feeble-mindedness");
-                        sleep(1000);
+//                        sleep(1000);
 
                     } catch (Exception e) {
                         e.printStackTrace();

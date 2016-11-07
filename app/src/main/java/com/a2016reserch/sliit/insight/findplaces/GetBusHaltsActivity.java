@@ -278,7 +278,41 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
+
             Log.d("Gesture ", " onSingleTapConfirmed");
+
+            if(selected != null)
+            {
+                Toast.makeText(GetBusHaltsActivity.this, "You have selected " + selected ,
+                        Toast.LENGTH_LONG).show();
+                speakWords("You have selected " + selected + ", wait a movement!");
+                gpsLocation = new GpsLocation(GetBusHaltsActivity.this);
+
+                // check if GPS enabled
+                if (gpsLocation.canGetLocation()) {
+
+                    try {
+                        selectData(viewGroup);
+                        selected = null;
+                    } catch (Exception e1) {
+                        speakWords("Data not available");
+                    }
+
+                } else {
+                    //TODO activate gpsLocation automaticall
+                    // can't get location
+                    // GPS or Network is not enabled
+                    // Ask user to enable GPS/network in settings
+                    gpsLocation.showSettingsAlert();
+
+                }
+            }
+            else
+            {
+                speakWords("You have nothing select yet!");
+            }
+
+
             return true;
         }
 
@@ -557,6 +591,24 @@ public class GetBusHaltsActivity extends Activity implements TextToSpeech.OnInit
         }
     }
 
+    public void selectData(View vw) {
+
+        double latitude = 0.0;
+        double longitude = 0.0;
+        // check if GPS enabled
+        if (gpsLocation.canGetLocation()) {
+
+            location = gpsLocation.getLocation();
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }
+
+        String getURL = SERVICE_URL + "/getSortedPath/"+longitude+"/"+latitude+"/"+selected+"/"; // put suitable path and edit this in web service also
+
+        WebServiceTask wst = new WebServiceTask(WebServiceTask.GET_TASK, this, "Getting data...");
+
+        wst.execute(new String[]{getURL});
+    }
 
     // call this for get method
     public void retrieveSampleData(View vw) {

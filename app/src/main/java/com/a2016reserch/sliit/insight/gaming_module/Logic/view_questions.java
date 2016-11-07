@@ -3,9 +3,8 @@ package com.a2016reserch.sliit.insight.gaming_module.Logic;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.speech.tts.TextToSpeech;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -378,7 +377,7 @@ public class view_questions extends Activity implements  TextToSpeech.OnInitList
 
             else
             {
-                speakWords("You have given incorrect answer. Game is over");
+
                 status="incorrect";
                 int finalCount=0;
 
@@ -395,27 +394,28 @@ public class view_questions extends Activity implements  TextToSpeech.OnInitList
                     finalCount=0;
                 }
 
-                Thread logoTimer3 = new Thread() {
-                    public void run() {
-                        try {
+//                Thread logoTimer3 = new Thread() {
+//                    public void run() {
+//                        try {
+//
+//
+//
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                };
 
-
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-
-                logoTimer3.start();
+//                logoTimer3.start();
 
                 Intent n1 = new Intent(view_questions.this,view_marks.class);
-
+                n1.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 Bundle extras = new Bundle();
                 extras.putString("marks",String.valueOf(finalCount));
        //         extras.putString("correctanswer",arr.toString());
                 extras.putIntArray("array", arr);
                 n1.putExtras(extras);
+
                 startActivity(n1);
 
             }

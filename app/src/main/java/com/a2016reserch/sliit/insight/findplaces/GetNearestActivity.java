@@ -52,7 +52,7 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
     Location location;
 
     ViewGroup viewGroup = null;
-    private static String  selected = null;
+    String selected = null;
 
 
     private TextToSpeech tts;
@@ -121,38 +121,27 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
     @Override
     protected void onResume() {
         super.onResume();
-        tts = new TextToSpeech(this, this);
-        Thread logoTimer = new Thread() {
-            public void run() {
-                try {
-                    // Sleep to give a time to initialize the new tts instance
-                    sleep(1000);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        logoTimer.start();
-
     }
 
     /** Called when another activity is taking focus. */
     @Override
     protected void onPause() {
         super.onPause();
+        if (tts != null)
+        {
+            tts.stop();
+            //tts.shutdown();
+        }
 
     }
 
     /** Called when the activity is no longer visible. */
     @Override
     protected void onStop() {
-        // tts shutdown!
+
         if (tts != null)
         {
             tts.stop();
-            tts.shutdown();
         }
         super.onStop();
 
@@ -161,24 +150,11 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
     @Override
     protected void onRestart() {
 
-        tts = new TextToSpeech(this, this);
-        Thread logoTimer = new Thread() {
-            public void run() {
-                try {
-
-                    sleep(1000);
-                    //speakWords("Restart navigation services");
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        logoTimer.start();
+        if (tts == null) {
+            // success, create the TTS instance
+            tts = new TextToSpeech(this, this);
+        }
         super.onRestart();
-
-
     }
 
     /** Called just before the activity is destroyed. */
@@ -196,8 +172,21 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
     // back button
     public void onBackPressed() {
         speakWords("Back");
-        Intent intent = new Intent(GetNearestActivity.this, MainActivity.class);
-        startActivity(intent);
+        Thread timer = new Thread() {
+
+            public void run() {
+                try {
+                    sleep(1000);
+                    Intent intent = new Intent(GetNearestActivity.this, MainActivity.class);
+                    startActivity(intent);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        timer.start();
 
     }
 
@@ -271,6 +260,7 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             Log.d("Gesture ", " onSingleTapConfirmed");
+
             if(selected != null)
             {
                 Toast.makeText(GetNearestActivity.this, "You have selected " + selected ,
@@ -559,7 +549,7 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
 
     private class WebServiceTask extends AsyncTask<String, Integer, String> {
 
-        HttpResponse isResponse = null;
+
         public static final int POST_TASK = 1;
         public static final int GET_TASK = 2;
 
@@ -600,11 +590,7 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
 
         @Override
         protected void onPreExecute() {
-
-
             showProgressDialog(); //  display a progress dialog.
-
-
         }
 
         @Override
@@ -667,8 +653,8 @@ public class GetNearestActivity extends Activity implements TextToSpeech.OnInitL
                         httppost.setEntity(new UrlEncodedFormEntity(params));
 
                         response = httpclient.execute(httppost);
-                        isResponse = response;
                         break;
+
                     case GET_TASK:
                         HttpGet httpget = new HttpGet(url);
                         response = httpclient.execute(httpget);

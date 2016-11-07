@@ -2,31 +2,18 @@ package com.a2016reserch.sliit.insight.gaming_module;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.speech.tts.TextToSpeech;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.a2016reserch.sliit.insight.R;
-import com.a2016reserch.sliit.insight.gaming_module.Logic.DBHelper;
-import com.a2016reserch.sliit.insight.gaming_module.Logic.QuestionUpdateEndpoint;
-import com.a2016reserch.sliit.insight.gaming_module.Logic.Questions;
-import com.a2016reserch.sliit.insight.gaming_module.Logic.Update_Question;
 import com.a2016reserch.sliit.insight.gaming_module.Logic.view_questions;
 import com.a2016reserch.sliit.insight.learning_module.help_keypad.Braille_Tutorials;
 
-import java.util.ArrayList;
 import java.util.Locale;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainMenu_GameLevels extends Activity implements  TextToSpeech.OnInitListener{
 
@@ -230,6 +217,7 @@ public class MainMenu_GameLevels extends Activity implements  TextToSpeech.OnIni
                 speakWords("Easy Level is opening");
                 type="easy";
                 Intent intent = new Intent(MainMenu_GameLevels.this, view_questions.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intent.putExtra("type", "easy");
                 startActivity(intent);
                 onDestroy();
