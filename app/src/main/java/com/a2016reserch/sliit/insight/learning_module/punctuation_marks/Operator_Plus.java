@@ -122,7 +122,9 @@ public class Operator_Plus extends Activity implements TextToSpeech.OnInitListen
 
     @Override
     public void onBackPressed() {
-        //moveTaskToBack(false);
+        Intent i = new Intent(Operator_Plus.this, MainMenu_LearningModule.class);
+        startActivity(i);
+        onDestroy();
 
     }
 

@@ -156,7 +156,9 @@ public class TopScreenLeftRight extends Activity {
     @Override
     public void onBackPressed() {
 
-        //moveTaskToBack(false);
+        Intent i = new Intent(TopScreenLeftRight.this, MainMenu_LearningModule.class);
+        startActivity(i);
+        onDestroy();
 
     }
 

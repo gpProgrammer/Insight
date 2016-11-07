@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1.0"
-            android:text="Mid Left"
+            android:text="Middle Left"
             android:onClick="onClick" />
 
         <Button
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1.0"
-            android:text="Mid Right"
+            android:text="Middle Right"
             android:onClick="onClick"
             />
 

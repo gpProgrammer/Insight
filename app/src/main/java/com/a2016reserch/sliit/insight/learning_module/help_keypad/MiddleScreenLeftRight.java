@@ -287,7 +287,9 @@ public class MiddleScreenLeftRight extends Activity {
 
     @Override
     public void onBackPressed() {
-        //moveTaskToBack(false);
+        Intent i = new Intent(MiddleScreenLeftRight.this, MainMenu_LearningModule.class);
+        startActivity(i);
+        onDestroy();
 
     }
 

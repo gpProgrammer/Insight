@@ -9,6 +9,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
+import com.a2016reserch.sliit.insight.InsightHomeActivity;
 import com.a2016reserch.sliit.insight.R;
 
 import java.util.Locale;
@@ -49,9 +50,10 @@ public class MainMenu_LearningModule extends Activity implements TextToSpeech.On
                     sleep(1500);
                     speakWords("Welcome to Learning Module Main menu");
                     sleep(1500);
-                    speakWords("Main menu consists with three options like Keypad Introduction,Braille Keypad, Braille Tutor");
+                    speakWords("Main menu consists with three options like Keypad Introduction,Braille Keypad and Braille Tutor");
                     sleep(1500);
-                    speakWords("Swipe the screen from right to left to read the menu");
+                    speakWords("Give long press to listen to the help option");
+
 
 
                 } catch (Exception e) {
@@ -142,9 +144,9 @@ public class MainMenu_LearningModule extends Activity implements TextToSpeech.On
     @Override
     public void onBackPressed() {
 
-        speakWords("Exit!");
-        // onDestroy();
-        moveTaskToBack(true);
+        Intent intent = new Intent(MainMenu_LearningModule.this, InsightHomeActivity.class);
+        startActivity(intent);
+        onDestroy();
 
     }
 
@@ -226,7 +228,7 @@ public class MainMenu_LearningModule extends Activity implements TextToSpeech.On
 
             }
             if (start == -1) {
-                //  view_key_pad();
+
 
             } else if (start == 1) {
 
@@ -244,7 +246,7 @@ public class MainMenu_LearningModule extends Activity implements TextToSpeech.On
 
             }else {
                 System.out.println(Integer.toString(start));
-                //  speakWords("invalid");
+
 
             }
 
@@ -261,7 +263,30 @@ public class MainMenu_LearningModule extends Activity implements TextToSpeech.On
         @Override
         public void onLongPress(MotionEvent e) {
             Log.d("Gesture ", " onLongPress");
-            speakWords("Help option");
+            Thread logoTimer = new Thread() {
+                public void run() {
+                    try {
+
+                        Log.d("Gesture ", " onLongPress");
+                        sleep(1000);
+                        speakWords("Learning Module, help.");
+                        sleep(2000);
+                        speakWords("Swipe right,to listen the options respectively");
+                        sleep(2000);
+                        speakWords("Double tap, to select the options in the learning module menu.");
+                        sleep(2000);
+                        speakWords("Swipe left, to access the previous option.");
+                        sleep(2000);
+                        speakWords("long press, to get help on any service.");
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            logoTimer.start();
+
         }
 
         @Override

@@ -268,6 +268,10 @@ public class Letter_A extends Activity implements TextToSpeech.OnInitListener {
     @Override
     public void onBackPressed() {
 
+        Intent i = new Intent(Letter_A.this, MainMenu_LearningModule.class);
+        startActivity(i);
+        onDestroy();
+
 
     }
     @Override
@@ -301,6 +305,7 @@ public class Letter_A extends Activity implements TextToSpeech.OnInitListener {
             vibeA.vibrate(500);
             statusA="correct";
             speakWords("Correct Entry of Letter A. For Letter B, swipe the screen right to left");
+            speakWords("If you want go back to braille tutor menu swipe screen from left to right");
 
         }
 

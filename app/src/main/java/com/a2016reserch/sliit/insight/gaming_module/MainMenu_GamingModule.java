@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.a2016reserch.sliit.insight.InsightHomeActivity;
 import com.a2016reserch.sliit.insight.R;
 import com.a2016reserch.sliit.insight.gaming_module.Logic.Questions;
 import com.a2016reserch.sliit.insight.gaming_module.Logic.QuestionUpdateEndpoint;
@@ -65,6 +66,10 @@ public class MainMenu_GamingModule extends Activity implements TextToSpeech.OnIn
 
                     sleep(1500);
                     speakWords("Welcome to Gaming Module");
+                    sleep(1500);
+                    speakWords("Main menu consists with three options like Start Game,Update Game and Instructions");
+                    sleep(1500);
+                    speakWords("Give long press to listen to the help option");
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -154,9 +159,9 @@ public class MainMenu_GamingModule extends Activity implements TextToSpeech.OnIn
     @Override
     public void onBackPressed() {
 
-        speakWords("Exit!");
-        // onDestroy();
-        moveTaskToBack(true);
+        Intent intent = new Intent(MainMenu_GamingModule.this, InsightHomeActivity.class);
+        startActivity(intent);
+        onDestroy();
 
     }
 
@@ -228,7 +233,7 @@ public class MainMenu_GamingModule extends Activity implements TextToSpeech.OnIn
             Log.d("Gesture ", " onDoubleTap");
             int val = start;
             if (start == 0) {
-                speakWords("Start Game");
+                speakWords("Start Game is selected");
                 Intent intent = new Intent(MainMenu_GamingModule.this, MainMenu_GameLevels.class);
                 startActivity(intent);
                 onDestroy();
@@ -239,11 +244,8 @@ public class MainMenu_GamingModule extends Activity implements TextToSpeech.OnIn
 
             } else if (start == 1) {
 
-                speakWords("Update Game");
+                speakWords("Update Game is selected");
                 speakWords("Wait a moment, game will be updated in few minutes");
-//                Intent intent = new Intent(MainMenu_GamingModule.this, Braille_Keypad.class);
-//                startActivity(intent);
-//                onDestroy();
 
                 Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
                 Retrofit retrofit = retrofitBuilder.baseUrl("http://192.168.137.1:8084/insight/webapi/").addConverterFactory(GsonConverterFactory.create()).build();
@@ -284,7 +286,7 @@ public class MainMenu_GamingModule extends Activity implements TextToSpeech.OnIn
 
 
             } else if (start == 2) {
-                speakWords("Instructions");
+                speakWords("Instructions module is selected");
                 Intent intent = new Intent(MainMenu_GamingModule.this, Braille_Tutorials.class);
                 startActivity(intent);
                 onDestroy();
@@ -308,7 +310,33 @@ public class MainMenu_GamingModule extends Activity implements TextToSpeech.OnIn
         @Override
         public void onLongPress(MotionEvent e) {
             Log.d("Gesture ", " onLongPress");
-            speakWords("Help option");
+
+            Thread logoTimer = new Thread() {
+                public void run() {
+                    try {
+
+                        Log.d("Gesture ", " onLongPress");
+                        sleep(3000);
+                        speakWords("Gaming module, help.");
+                        sleep(3000);
+                        speakWords("There are three options you can perform like start game, update game and instructions.");
+                        sleep(3000);;
+                        speakWords("Swipe right,to listen the options respectively");
+                        sleep(3000);
+                        speakWords("Double tap, to select particular option in the gaming module menu.");
+                        sleep(3000);
+                        speakWords("Swipe left, to access the previous option.");
+                        sleep(3000);
+                        speakWords("long press, to get help on any service.");
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            logoTimer.start();
+
         }
 
         @Override

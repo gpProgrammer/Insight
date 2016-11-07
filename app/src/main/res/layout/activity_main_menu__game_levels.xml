@@ -16,7 +16,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/txtName"
-        android:textSize="48sp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:gravity="center"/>
