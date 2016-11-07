@@ -54,7 +54,7 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
             public void run() {
                 try {
 
-                    sleep(1500);
+                    sleep(1000);
                     speakWords("Welcome to Insight");
 
                 } catch (Exception e) {

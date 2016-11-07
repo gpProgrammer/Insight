@@ -20,7 +20,11 @@ import android.util.Log;
 /**
  * Created by Ganindu Ranasinghe on 30-Oct-16.
  */
-public class GPSLocation extends Service implements LocationListener {
+public class GpsLocation extends Service implements LocationListener {
+
+    public static double Latitude;
+    public static double Longitude;
+
 
     private final Context lContext;
 
@@ -38,23 +42,23 @@ public class GPSLocation extends Service implements LocationListener {
     double longitude; // longitude
 
     // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 5; // 5 meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 3; // 5 meters
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60; // 1/2 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 30; // 1/2 minute
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
 
     // declaring a address feild
-    String addressField = "";
+    private String addressField = null;
 
-    public  GPSLocation()
-    {
+    public GpsLocation() {
         getLocation();
         lContext = null;
     }
-    public GPSLocation(Context context) {
+
+    public GpsLocation(Context context) {
         this.lContext = context;
         getLocation();
     }
@@ -67,53 +71,117 @@ public class GPSLocation extends Service implements LocationListener {
         return this.canGetLocation;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-//    public String getAddressField()
-//    {
-//        return this.addressField;
-//    }
+    public String getAddressField() {
+
+
+
+
+//        // Check if GPS enabled
+//        if(this.canGetLocation()) {
+//
+//            double lat = location.getLatitude();
+//            double lng = location.getLongitude();
+//            // addressField = gpsLocation.getAddressField();
+//            Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
+//            StringBuilder builder = new StringBuilder();
+//            try {
+//                List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
+//                int maxLines = address.get(0).getMaxAddressLineIndex();
+//                for (int i = 0; i < maxLines; i++) {
+//                    String addressStr = address.get(0).getAddressLine(i);
+//                    builder.append(addressStr);
+//                    builder.append(" ");
+//                }
+//
+//                String fnialAddress = builder.toString(); //This is the complete address.
+//
+//                String latituteField = String.valueOf(lat);
+//                String longitudeField = String.valueOf(lng);
+//                addressField = fnialAddress; //This will display the final address.
+//
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
+//            } catch (NullPointerException ex) {
+//                ex.printStackTrace();
+//            }
+//
+//        }
+//
+//        else {
+//            // Can't get location.
+//            // GPS or network is not enabled.
+//            // Ask user to enable GPS/network in settings.
+//            this.showSettingsAlert();
+//
+//        }
+
+
+        return this.addressField;
+    }
 
     public Location getLocation() {
         try {
             locationManager = (LocationManager) lContext
                     .getSystemService(LOCATION_SERVICE);
 
-            // getting GPS status
+            // Getting GPS status
             isGPSEnabled = locationManager
                     .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-            // getting network status
-            //isNetworkEnabled = locationManager
-            //      .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            // Getting network status
+            isNetworkEnabled = locationManager
+                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-            if (!isGPSEnabled) {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                    // TODO Have to auto enable GPS
-                    // TODO add auto enable mobile data
-                }
+            if (!isGPSEnabled && !isNetworkEnabled) {
+                location = null;
             } else {
                 this.canGetLocation = true;
-                // if GPS Enabled get lat/long using GPS Services
-
-
-                locationManager.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER,
-                        MIN_TIME_BW_UPDATES,
-                        MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                Log.d("GPS Enabled", "GPS Enabled");
-                if (locationManager != null) {
-                    location = locationManager
-                            .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    if (location != null) {
-                        // onLocationChanged(location);
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
+                if (isNetworkEnabled) {
+                    locationManager.requestLocationUpdates(
+                            LocationManager.NETWORK_PROVIDER,
+                            MIN_TIME_BW_UPDATES,
+                            MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                    Log.d("Network", "Network");
+                    if (locationManager != null) {
+                        location = locationManager
+                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        if (location != null) {
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+                        }
                     }
                 }
-
+                // If GPS enabled, get latitude/longitude using GPS Services
+                if (isGPSEnabled) {
+                    if (location == null) {
+                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            return null;
+                        }
+                        locationManager.requestLocationUpdates(
+                                LocationManager.GPS_PROVIDER,
+                                MIN_TIME_BW_UPDATES,
+                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                        Log.d("GPS Enabled", "GPS Enabled");
+                        if (locationManager != null) {
+                            location = locationManager
+                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            if (location != null) {
+                                latitude = location.getLatitude();
+                                longitude = location.getLongitude();
+                            }
+                        }
+                    }
+                }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -130,7 +198,7 @@ public class GPSLocation extends Service implements LocationListener {
         if (locationManager != null) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                locationManager.removeUpdates(GPSLocation.this);
+                locationManager.removeUpdates(GpsLocation.this);
 
             }
 
@@ -202,7 +270,14 @@ public class GPSLocation extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+    //this.getLocation();
 
+//        // Check if GPS enabled
+//        if(this.canGetLocation()) {
+//
+//             Latitude = location.getLatitude();
+//             Longitude = location.getLongitude();
+//        }
 //        double lat = location.getLatitude();
 //        double lng = location.getLongitude();
 //

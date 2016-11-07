@@ -5,33 +5,32 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 import com.a2016reserch.sliit.insight.InsightHomeActivity;
 import com.a2016reserch.sliit.insight.R;
+import com.a2016reserch.sliit.insight.findplaces.Logic.GpsLocation;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
 // add a comment into Test Branch
-public class MainActivity extends Activity implements LocationListener, TextToSpeech.OnInitListener {
+public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
     // This code can be any value you want, its just a checksum.
     private static final int MY_DATA_CHECK_CODE = 1234;
     String addressField = "not available";
     Location location = null;
-    private LocationManager locationManager;
-    private String provider;
     private GestureDetector mGestureDetector;
     private GestureDetectorCompat gestureDetector;
     private TextToSpeech tts;
+    private GpsLocation gpsLocation;
 
     /**
      * Called when the activity is first created.
@@ -46,29 +45,30 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Fire off an intent to check if a TTS engine is installed
+        Intent checkIntent = new Intent();
+        checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
+
 //        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 //
 //        Criteria criteria = new Criteria();
 //        provider = locationManager.getBestProvider(criteria, false);
 //        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //
-//            return;
+//            //return;
 //        }
 //        location = locationManager.getLastKnownLocation(provider);
 
-        // Fire off an intent to check if a TTS engine is installed
-        Intent checkIntent = new Intent();
-        checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-        startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
-
+        gpsLocation = new GpsLocation(MainActivity.this);
 
         Thread logoTimer = new Thread() {
             public void run() {
                 try {
 
-                    sleep(2000);
+                    sleep(1500);
                     speakWords("Welcome! to navigation services");
-                    sleep(4000);
+                    sleep(2500);
                     speakWords("Long press to get help");
 
 
@@ -81,39 +81,7 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
         logoTimer.start();
 
 
-        // show location button click event
-//        btnShowLocation.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View arg0) {
-//                // create class object
-//                gps = new GPSLocation(MainActivity.this);
-//
-//                // check if GPS enabled
-//                if(gps.canGetLocation()){
-//
-//                    double latitude = gps.getLatitude();
-//                    double longitude = gps.getLongitude();
-//
-//                    // \n is for new line
-//                    Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
-//                }else{
-//                    // can't get location
-//                    // GPS or Network is not enabled
-//                    // Ask user to enable GPS/network in settings
-//                    gps.showSettingsAlert();
-//                }
-//
-//            }
-//        });
 
-//        btnGetNearest.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this, GetNearestActivity.class));
-//            }
-//        });
     } // end of onCreate method
 
     /**
@@ -122,6 +90,8 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
     @Override
     protected void onStart() {
         super.onStart();
+        // getLocation method in GpsLocation class
+        //location = gpsLocation.getLocation();
 
     }
 
@@ -131,38 +101,8 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
     @Override
     protected void onResume() {
         super.onResume();
-//        try {
-//            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//
-//            Criteria criteria = new Criteria();
-//            provider = locationManager.getBestProvider(criteria, false);
-//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//
-//                return;
-//            }
-//            location = locationManager.getLastKnownLocation(provider);
-//
-//            locationManager.requestLocationUpdates(provider, 0,0, this);
-//
-//            tts = new TextToSpeech(this, this);
-//            Thread logoTimer = new Thread() {
-//                public void run() {
-//                    try {
-//                        // Sleep to give a time to initialize the new tts instance
-//                        sleep(1000);
-//
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            };
-//
-//            logoTimer.start();
-//
-//        } catch (SecurityException ex) {
-//            speakWords("Permission denied on Resume");
-//
-//        }
+        // getLocation method in GpsLocation class
+        // location = gpsLocation.getLocation();
 
     }
 
@@ -171,27 +111,11 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
      */
     @Override
     protected void onPause() {
+        if (tts != null)
+        {
+            tts.stop();
+        }
         super.onPause();
-//        try {
-//
-//            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//
-//            Criteria criteria = new Criteria();
-//            provider = locationManager.getBestProvider(criteria, false);
-//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//
-//                return;
-//            }
-//            location = locationManager.getLastKnownLocation(provider);
-//
-//            locationManager.removeUpdates(this);
-//            //speakWords("Pause navigation services");
-//           // tts.stop();
-//
-//        } catch (SecurityException ex) {
-//            speakWords("Permission denied on Pause");
-//
-//        }
 
     }
 
@@ -201,7 +125,6 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
     @Override
     protected void onStop() {
 
-        // tts shutdown!
         if (tts != null)
         {
             tts.stop();
@@ -217,23 +140,13 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
     @Override
     protected void onRestart() {
 
-        tts = new TextToSpeech(this, this);
-        Thread logoTimer = new Thread() {
-            public void run() {
-                try {
-
-                    sleep(1000);
-                    //speakWords("Restart navigation services");
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        logoTimer.start();
+        if (tts == null) {
+            // success, create the TTS instance
+            tts = new TextToSpeech(this, this);
+        }
+        // getLocation method in GpsLocation class
+        //location = gpsLocation.getLocation();
         super.onRestart();
-
 
     }
 
@@ -243,14 +156,13 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
     @Override
     public void onDestroy() {
 
-        // tts shutdown!
         if (tts != null)
         {
             tts.stop();
             tts.shutdown();
         }
+        gpsLocation.stopUsingGPS();
         super.onDestroy();
-
 
     }
 
@@ -313,55 +225,55 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
             tts.speak(speech, TextToSpeech.QUEUE_FLUSH, null);
 
         }
-
-
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
+ //   @Override
+//    public void onLocationChanged(Location location) {
+//
+//        double lat = location.getLatitude();
+//        double lng = location.getLongitude();
+//
+//        Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
+//        StringBuilder builder = new StringBuilder();
+//        try {
+//            List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
+//            int maxLines = address.get(0).getMaxAddressLineIndex();
+//            for (int i = 0; i < maxLines; i++) {
+//                String addressStr = address.get(0).getAddressLine(i);
+//                builder.append(addressStr);
+//                builder.append(" ");
+//            }
+//
+//            String fnialAddress = builder.toString(); //This is the complete address.
+//
+//            String latituteField = String.valueOf(lat);
+//            String longitudeField = String.valueOf(lng);
+//            addressField = fnialAddress; //This will display the final address.
+//            Toast.makeText(MainActivity.this, "lat = " + lat + " lng = " + lng + " / " + addressField,
+//                    Toast.LENGTH_LONG).show();
+//
+//        }   catch (IOException ex) {
+//        ex.printStackTrace();
+//        }
+//    catch (NullPointerException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-        double lat = location.getLatitude();
-        double lng = location.getLongitude();
-
-        Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
-        StringBuilder builder = new StringBuilder();
-        try {
-            List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
-            int maxLines = address.get(0).getMaxAddressLineIndex();
-            for (int i = 0; i < maxLines; i++) {
-                String addressStr = address.get(0).getAddressLine(i);
-                builder.append(addressStr);
-                builder.append(" ");
-            }
-
-            String fnialAddress = builder.toString(); //This is the complete address.
-
-            String latituteField = String.valueOf(lat);
-            String longitudeField = String.valueOf(lng);
-            addressField = fnialAddress; //This will display the final address.
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
+//    @Override
+//    public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//    }
+//
+//    @Override
+//    public void onProviderEnabled(String provider) {
+//
+//    }
+//
+//    @Override
+//    public void onProviderDisabled(String provider) {
+//
+//    }
 
     /**
      * Executed when a new TTS is instantiated. Check the whether Language is support or not.
@@ -378,7 +290,7 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
                     || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.e("TTS", "This Language is not supported");
             } else {
-
+                Log.e("TTS", "Language is supported");
             }
 
         } else {
@@ -432,29 +344,39 @@ public class MainActivity extends Activity implements LocationListener, TextToSp
         @Override
         public boolean onDoubleTap(MotionEvent e) {
 
-            if (location != null) {
-                //System.out.println("Provider " + provider + " has been selected.");
-                onLocationChanged(location);
-            } else {
+            location = gpsLocation.getLocation();
 
-////                speakWords("Location not available");
-//                locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//
-//                Criteria criteria = new Criteria();
-//
-//                provider = locationManager.getBestProvider(criteria, false);
-//                try {
-//                    location = locationManager.getLastKnownLocation(provider);
-//                    onLocationChanged(location);
-//                } catch (SecurityException ex) {
-//                    speakWords("Permission denied");
-//
-//                }
+                double lat = location.getLatitude();
+                double lng = location.getLongitude();
 
-                speakWords("GPS not available");
-            }
+                Geocoder geoCoder = new Geocoder(MainActivity.this, Locale.getDefault());
+                StringBuilder builder = new StringBuilder();
+                try {
+                    List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
+                    int maxLines = address.get(0).getMaxAddressLineIndex();
+                    for (int i = 0; i < maxLines; i++) {
+                        String addressStr = address.get(0).getAddressLine(i);
+                        builder.append(addressStr);
+                        builder.append(" ");
+                    }
+
+                    String fnialAddress = builder.toString(); //This is the complete address.
+
+                    String latituteField = String.valueOf(lat);
+                    String longitudeField = String.valueOf(lng);
+                    addressField = fnialAddress; //This will display the final address.
+                    Toast.makeText(MainActivity.this, "lat = " + lat + " lng = " + lng + " / " + addressField,
+                            Toast.LENGTH_LONG).show();
+
+                }   catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                catch (NullPointerException ex) {
+                    ex.printStackTrace();
+                }
 
             speakWords("Your current location is, " + addressField);
+
             return true;
         }
 

@@ -43,7 +43,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class WalkingDirectionActivity extends Activity implements LocationListener, TextToSpeech.OnInitListener{
+public class WalkingDirection extends Activity implements LocationListener, TextToSpeech.OnInitListener {
 
     private GestureDetector mGestureDetector;
     private GestureDetectorCompat gestureDetector;
@@ -97,7 +97,7 @@ public class WalkingDirectionActivity extends Activity implements LocationListen
 
             //Location lastKnownLocation = locationManager.getLastKnownLocation(provider);
 
-            Toast.makeText(WalkingDirectionActivity.this, "lat = " + lat + " lng = " + lng,
+            Toast.makeText(WalkingDirection.this, "lat = " + lat + " lng = " + lng,
                     Toast.LENGTH_SHORT).show();
 
         }
@@ -157,7 +157,7 @@ public class WalkingDirectionActivity extends Activity implements LocationListen
     public void retrieveSampleData(View vw) {
 
         // create class object
-        GpsLocation gps = new GpsLocation(WalkingDirectionActivity.this);
+        GpsLocation gps = new GpsLocation(WalkingDirection.this);
         double latitude = 0.0;
         double longitude = 0.0;
         // check if GPS enabled
@@ -187,7 +187,7 @@ public class WalkingDirectionActivity extends Activity implements LocationListen
             {
                 //speakWords("Sorry , There are no any bus halts within 500 meters ");
             }
-            Toast.makeText(WalkingDirectionActivity.this, "response sise = " + jsonObjList.size(),
+            Toast.makeText(WalkingDirection.this, "response sise = " + jsonObjList.size(),
                     Toast.LENGTH_LONG).show();
 
             for (int i = 0; i < jsonObjList.size(); i++) {
@@ -209,7 +209,7 @@ public class WalkingDirectionActivity extends Activity implements LocationListen
                 //System.out.println("Provider " + provider + " has been selected.");
                 onLocationChanged(location);
             } else {
-                Toast.makeText(WalkingDirectionActivity.this, "Location not available",
+                Toast.makeText(WalkingDirection.this, "Location not available",
                         Toast.LENGTH_LONG).show();
             }
 
@@ -441,4 +441,6 @@ public class WalkingDirectionActivity extends Activity implements LocationListen
 
 
     }
+
 }
+
