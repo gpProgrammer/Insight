@@ -20,7 +20,7 @@ public class Splash_Screen_Game extends AppCompatActivity {
                     // Thread will sleep for 3 seconds
                     sleep(3*1000);
 
-                    // After 5 seconds redirect to another intent
+                    // After 3 seconds redirect to another intent
                     Intent intent = new Intent(Splash_Screen_Game.this, MainMenu_GamingModule.class);
                     startActivity(intent);
 

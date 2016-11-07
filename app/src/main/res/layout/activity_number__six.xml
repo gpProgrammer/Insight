@@ -9,4 +9,93 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.a2016reserch.sliit.insight.learning_module.numbers.Number_Six">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:orientation="horizontal"
+        android:id="@+id/linear1">
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:shadowColor="#fff0ed4a"
+            android:layout_weight="1.0"
+            android:text="Top Left"
+            android:layout_gravity="top|left|bottom|right"
+            android:onClick="onClick"
+            android:background="@drawable/buttons"
+            />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:text="Top Right"
+            android:onClick="onClick"
+            android:background="@drawable/buttons"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:orientation="horizontal"
+        android:id="@+id/linear2">
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:text="Mid Left"
+            android:onClick="onClick"
+            android:background="@drawable/buttons"
+            />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:text="Mid Right"
+            android:onClick="onClick"
+            android:background="@drawable/buttons"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:orientation="horizontal"
+        android:id="@+id/linear3">
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:text="Bottom Left"
+            android:onClick="onClick"
+            android:background="@drawable/buttons"
+            />
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:text="Bottom Right"
+            android:onClick="onClick"
+            android:background="@drawable/buttons"/>
+
+    </LinearLayout>
+
+
 </RelativeLayout>

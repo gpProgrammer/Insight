@@ -136,14 +136,11 @@ public class DBHelper {
     public void insertMarks(Marks details){
 
         ContentValues values = new ContentValues();
-        //Current date and time
         values.put(QUZ_ID,details.getQuizId());
         values.put(QUZ_DIFFICULTY,details.getDifficulty());
         values.put(QUZ_STATUS,details.getStatus());
         values.put(QUZ_MARK, details.getMarks());
         Log.d("Test","Values are "+values.toString());
-
-        // values.put("date", DateFormat.getDateTimeInstance().format(new Date()));
         mDb.insert(TABLE_MARKS, null, values);
 
     }

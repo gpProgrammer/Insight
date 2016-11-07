@@ -7,6 +7,29 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.a2016reserch.sliit.insight.gaming_module.view_marks">
+    tools:context="com.a2016reserch.sliit.insight.gaming_module.view_marks"
+    android:background="#fffff956"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="75dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=""
+        android:id="@+id/textView6"
+        android:textSize="40dp"
+        android:textAlignment="center"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/textView6"
+        android:layout_alignStart="@+id/textView6"
+        android:layout_marginTop="40dp" />
 
 </RelativeLayout>
