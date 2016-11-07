@@ -53,7 +53,7 @@ public class WalkingDirectionActivity extends Activity implements LocationListen
     private String provider;
 
     private static final String SERVICE_URL = "http://localhost:8085/navigation/webapi/myresource";
-    private static final String TAG = "WalkingDirection";
+    private static final String TAG = "WalkingActivity";
     private TextToSpeech tts;
     // This code can be any value you want, its just a checksum.
     private static final int MY_DATA_CHECK_CODE = 1234;
@@ -61,6 +61,9 @@ public class WalkingDirectionActivity extends Activity implements LocationListen
     String addressField = "not available";
 
     Location location = null;
+
+    double locationLatitude;
+    double locationLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,12 +95,12 @@ public class WalkingDirectionActivity extends Activity implements LocationListen
     public void onLocationChanged(Location location) {
 
         if(location != null) {
-            double lat = location.getLatitude();
-            double lng = location.getLongitude();
+            locationLatitude = location.getLatitude();
+            locationLongitude = location.getLongitude();
 
             //Location lastKnownLocation = locationManager.getLastKnownLocation(provider);
 
-            Toast.makeText(WalkingDirectionActivity.this, "lat = " + lat + " lng = " + lng,
+            Toast.makeText(WalkingDirectionActivity.this, "lat = " + locationLatitude + " lng = " + locationLongitude,
                     Toast.LENGTH_SHORT).show();
 
         }
@@ -298,8 +301,6 @@ public class WalkingDirectionActivity extends Activity implements LocationListen
             pDlg.show();
 
         }
-
-
 
         public void addNameValuePair(String name, String value) {
 
