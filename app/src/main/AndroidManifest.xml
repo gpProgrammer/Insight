@@ -21,13 +21,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".findplaces.MainActivity" />
-        <activity android:name=".findplaces.GetBusHaltsActivity">
-
-        </activity>
-        <activity android:name=".findplaces.GetNearestActivity">
-
-        </activity>
-        <activity android:name=".findplaces.WalkingDirectionActivity"></activity>
+        <activity android:name=".findplaces.GetBusHaltsActivity" />
+        <activity android:name=".findplaces.GetNearestActivity" />
+        <activity android:name=".findplaces.WalkingDirectionActivity" />
+        <activity android:name=".Messaging.MessageInbox" />
+        <activity android:name=".Messaging.ReadMessage" />
+        <activity android:name=".Messaging.ReceiveSms" />
+        <activity android:name=".Messaging.SendSms" />
+        <activity android:name=".Messaging.SendSmsPhone" />
+        <activity android:name=".Messaging.SendSmsMessage" />
+        <activity android:name=".Messaging.SentItems"></activity>
     </application>
 
 </manifest>
