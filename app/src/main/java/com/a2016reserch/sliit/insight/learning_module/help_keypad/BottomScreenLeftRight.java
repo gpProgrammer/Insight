@@ -116,8 +116,7 @@ public class BottomScreenLeftRight extends Activity {
                                         speakWords("All three  areas are successfully identified by you. Now Let's try to identify whole keypad at once.");
                                         sleep(8000);
                                         speakWords("If you want to go back to learn the top area again, swipe the screen from left to right");
-                                        sleep(6000);
-                                        speakWords("If you want to go to try the full keypad at once, swipe the screen right to left");
+
 
 
 
@@ -177,7 +176,9 @@ public class BottomScreenLeftRight extends Activity {
     public void onBackPressed() {
 
 
-        //moveTaskToBack(false);
+        Intent i = new Intent(BottomScreenLeftRight.this, MainMenu_LearningModule.class);
+        startActivity(i);
+        onDestroy();
     }
 
     public void onStop()

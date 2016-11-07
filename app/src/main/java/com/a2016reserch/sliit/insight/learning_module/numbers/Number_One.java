@@ -129,7 +129,9 @@ public class Number_One extends Activity implements TextToSpeech.OnInitListener 
     @Override
     public void onBackPressed() {
 
-        //moveTaskToBack(false);
+        Intent i = new Intent(Number_One.this, MainMenu_LearningModule.class);
+        startActivity(i);
+        onDestroy();
 
     }
 
@@ -298,6 +300,7 @@ public class Number_One extends Activity implements TextToSpeech.OnInitListener 
             vibeA.vibrate(500);
             statusOne = "correct";
             speakWords("Correct Entry of number one. For Number 2, swipe the screen right to left");
+            speakWords("If you want go back to braille tutor menu swipe screen from left to rihght");
 
         } else {
 

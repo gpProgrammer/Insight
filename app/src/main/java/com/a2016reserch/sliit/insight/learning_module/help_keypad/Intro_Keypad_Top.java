@@ -75,7 +75,7 @@ public class Intro_Keypad_Top extends Activity {
                     sleep(5000);
                     speakWords("Braille keypad  consists with six divided areas");
                     sleep(6000);
-                    speakWords("Fist stage let's identify three areas of the keypad, like Top, middle and Bottom");
+                    speakWords("First stage let's identify three areas of the keypad, like Top, middle and Bottom");
                     sleep(7000);
                     speakWords("Top area has activated. First let's learn about the top area of the screen");
                     sleep(5000);
@@ -180,6 +180,7 @@ public class Intro_Keypad_Top extends Activity {
 
             if (e1.getX() < e2.getX()) {
                 Log.d("Gesture ", "Left to Right swipe: " + e1.getX() + " - " + e2.getX());
+
                 Intent i = new Intent(Intro_Keypad_Top.this, MainMenu_LearningModule.class);
                 startActivity(i);
                 onDestroy();
@@ -222,6 +223,9 @@ public class Intro_Keypad_Top extends Activity {
     @Override
     public void onBackPressed() {
         // moveTaskToBack(false);
+        Intent i = new Intent(Intro_Keypad_Top.this, MainMenu_LearningModule.class);
+        startActivity(i);
+        onDestroy();
 
     }
 

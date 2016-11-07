@@ -16,6 +16,7 @@ import android.widget.Button;
 
 import com.a2016reserch.sliit.insight.R;
 import com.a2016reserch.sliit.insight.learning_module.help_keypad.Braille_Tutorials;
+import com.a2016reserch.sliit.insight.learning_module.help_keypad.MainMenu_LearningModule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -122,6 +123,9 @@ public class Operator_Exclamation extends Activity implements TextToSpeech.OnIni
 
     @Override
     public void onBackPressed() {
+        Intent i = new Intent(Operator_Exclamation.this, MainMenu_LearningModule.class);
+        startActivity(i);
+        onDestroy();
 
     }
 

@@ -18,6 +18,7 @@ import com.a2016reserch.sliit.insight.gaming_module.Logic.Questions;
 import com.a2016reserch.sliit.insight.gaming_module.Logic.Update_Question;
 import com.a2016reserch.sliit.insight.gaming_module.Logic.view_questions;
 import com.a2016reserch.sliit.insight.learning_module.help_keypad.Braille_Tutorials;
+import com.a2016reserch.sliit.insight.learning_module.help_keypad.MainMenu_LearningModule;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -64,6 +65,10 @@ public class MainMenu_GameLevels extends Activity implements  TextToSpeech.OnIni
 
                     sleep(1500);
                     speakWords("Gaming Levels are opening");
+                    sleep(1500);
+                    speakWords("Gaming levels consists with three options like easy, medium and hard");
+                    sleep(1500);
+                    speakWords("Give long press to listen to the help option");
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -153,9 +158,9 @@ public class MainMenu_GameLevels extends Activity implements  TextToSpeech.OnIni
     @Override
     public void onBackPressed() {
 
-        speakWords("Exit!");
-        // onDestroy();
-        moveTaskToBack(true);
+        Intent i = new Intent(MainMenu_GameLevels.this, MainMenu_GamingModule.class);
+        startActivity(i);
+        onDestroy();
 
     }
 
@@ -274,7 +279,31 @@ public class MainMenu_GameLevels extends Activity implements  TextToSpeech.OnIni
         @Override
         public void onLongPress(MotionEvent e) {
             Log.d("Gesture ", " onLongPress");
-            speakWords("Help option");
+            Thread logoTimer = new Thread() {
+                public void run() {
+                    try {
+
+                        Log.d("Gesture ", " onLongPress");
+                        sleep(3000);
+                        speakWords("Gaming Level, help.");
+                        sleep(3000);
+                        speakWords("There are three levels you can choose to play like easy, medium and hard.");
+                        sleep(3000);
+                        speakWords("Swipe right,to listen the levels respectively");
+                        sleep(3000);
+                        speakWords("Double tap, to select the gaming level in the gaming level menu.");
+                        sleep(3000);
+                        speakWords("Swipe left, to access the previous option.");
+                        sleep(3000);
+                        speakWords("long press, to get help on any service.");
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            logoTimer.start();
         }
 
         @Override

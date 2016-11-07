@@ -16,6 +16,7 @@ import android.widget.Button;
 
 import com.a2016reserch.sliit.insight.R;
 import com.a2016reserch.sliit.insight.learning_module.help_keypad.Braille_Tutorials;
+import com.a2016reserch.sliit.insight.learning_module.help_keypad.MainMenu_LearningModule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -255,7 +256,9 @@ public class Letter_B extends Activity implements TextToSpeech.OnInitListener {
     @Override
     public void onBackPressed() {
 
-        moveTaskToBack(false);
+        Intent i = new Intent(Letter_B.this, MainMenu_LearningModule.class);
+        startActivity(i);
+        onDestroy();
 
     }
 
@@ -298,6 +301,8 @@ public class Letter_B extends Activity implements TextToSpeech.OnInitListener {
                             statusB = "correct";
                             sleep(1000);
                             speakWords("To learn Letter A again, swipe screen from left to right");
+                            sleep(1000);
+                            speakWords("If you want go back to braille tutor menu press back");
 
                         } catch (Exception e) {
                             e.printStackTrace();

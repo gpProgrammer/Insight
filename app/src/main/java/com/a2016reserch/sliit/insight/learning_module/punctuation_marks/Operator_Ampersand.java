@@ -276,6 +276,9 @@ public class Operator_Ampersand extends Activity implements  TextToSpeech.OnInit
 
     @Override
     public void onBackPressed() {
+        Intent i = new Intent(Operator_Ampersand.this, MainMenu_LearningModule.class);
+        startActivity(i);
+        onDestroy();
 
     }
 
@@ -316,6 +319,7 @@ public class Operator_Ampersand extends Activity implements  TextToSpeech.OnInit
             vibeA.vibrate(500);
             statusA="correct";
             speakWords("Correct Entry of ampersand mark. To go to main menu,  swipe the screen right to left");
+            speakWords("If you want go back to braille tutor menu press back");
 
         }
 

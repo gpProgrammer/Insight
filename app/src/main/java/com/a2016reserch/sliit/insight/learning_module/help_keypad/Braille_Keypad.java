@@ -292,7 +292,9 @@ public class Braille_Keypad extends Activity implements View.OnClickListener {
     @Override
     public void onBackPressed() {
 
-        //moveTaskToBack(false);
+        Intent i = new Intent(Braille_Keypad.this, MainMenu_LearningModule.class);
+        startActivity(i);
+        onDestroy();
 
     }
 }

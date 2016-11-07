@@ -16,6 +16,7 @@ import android.widget.Button;
 
 import com.a2016reserch.sliit.insight.R;
 import com.a2016reserch.sliit.insight.learning_module.help_keypad.Braille_Tutorials;
+import com.a2016reserch.sliit.insight.learning_module.help_keypad.MainMenu_LearningModule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -263,7 +264,9 @@ public class Operator_Asterisks extends Activity implements TextToSpeech.OnInitL
 
     @Override
     public void onBackPressed() {
-        //moveTaskToBack(false);
+        Intent i = new Intent(Operator_Asterisks.this, MainMenu_LearningModule.class);
+        startActivity(i);
+        onDestroy();
 
     }
 
@@ -305,6 +308,8 @@ public class Operator_Asterisks extends Activity implements TextToSpeech.OnInitL
                             statusAsterisk = "correct";
                             sleep(4000);
                             speakWords("To learn the Learning menu again, swipe on the screen from left to right");
+                            sleep(1000);
+                            speakWords("If you want go back to braille tutor menu press back");
 
 
 

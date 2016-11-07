@@ -16,6 +16,7 @@ import android.widget.Button;
 
 import com.a2016reserch.sliit.insight.R;
 import com.a2016reserch.sliit.insight.learning_module.help_keypad.Braille_Tutorials;
+import com.a2016reserch.sliit.insight.learning_module.help_keypad.MainMenu_LearningModule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -122,7 +123,9 @@ public class Number_Seven extends Activity implements TextToSpeech.OnInitListene
     @Override
     public void onBackPressed() {
 
-        //moveTaskToBack(false);
+        Intent i = new Intent(Number_Seven.this, MainMenu_LearningModule.class);
+        startActivity(i);
+        onDestroy();
 
     }
 

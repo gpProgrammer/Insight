@@ -145,9 +145,9 @@ public class Braille_Tutorials extends Activity implements TextToSpeech.OnInitLi
     @Override
     public void onBackPressed() {
 
-        speakWords("Exit!");
-        // onDestroy();
-        moveTaskToBack(true);
+        Intent i = new Intent(Braille_Tutorials.this, MainMenu_LearningModule.class);
+        startActivity(i);
+        onDestroy();
 
     }
 
@@ -262,7 +262,31 @@ public class Braille_Tutorials extends Activity implements TextToSpeech.OnInitLi
         @Override
         public void onLongPress(MotionEvent e) {
             Log.d("Gesture ", " onLongPress");
-            speakWords("Help option");
+            Thread logoTimer = new Thread() {
+                public void run() {
+                    try {
+
+                        Log.d("Gesture ", " onLongPress");
+                        sleep(3000);
+                        speakWords("Braille Tutor, help.");
+                        sleep(3000);
+                        speakWords("There are three options you can learn like English alphabet, numbers & punctuation marks");
+                        sleep(3000);
+                        speakWords("Swipe right,to listen the levels respectively");
+                        sleep(3000);
+                        speakWords("Double tap, to select the any option in the braille tutor menu.");
+                        sleep(3000);
+                        speakWords("Swipe left, to access the previous option.");
+                        sleep(3000);
+                        speakWords("long press, to get help on any service.");
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            logoTimer.start();
         }
 
         @Override

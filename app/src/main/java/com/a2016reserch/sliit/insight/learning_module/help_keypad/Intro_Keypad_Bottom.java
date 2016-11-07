@@ -228,7 +228,9 @@ public class Intro_Keypad_Bottom extends Activity {
     @Override
     public void onBackPressed() {
 
-        //moveTaskToBack(false);
+        Intent i = new Intent(Intro_Keypad_Bottom.this, MainMenu_LearningModule.class);
+        startActivity(i);
+        onDestroy();
 
     }
 
