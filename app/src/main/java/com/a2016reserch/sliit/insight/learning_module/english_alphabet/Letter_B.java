@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.a2016reserch.sliit.insight.R;
+import com.a2016reserch.sliit.insight.learning_module.help_keypad.Braille_Tutorials;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,8 +26,8 @@ public class Letter_B extends Activity implements TextToSpeech.OnInitListener {
 
     private TextToSpeech tts;
     boolean isStarted = false;
-    String statusB="incorrect";
-    boolean status= false;
+    String statusB = "incorrect";
+    boolean status = false;
     boolean nowinB = false;
     private List<Integer> mClickedButtonIds = new ArrayList<Integer>();
     Button b1, b2, b3, b4, b5, b6;
@@ -44,7 +45,7 @@ public class Letter_B extends Activity implements TextToSpeech.OnInitListener {
         Android_Gesture_Detector android_gesture_detector = new Android_Gesture_Detector();
         mGestureDetector = new GestureDetector(this, android_gesture_detector);
 
-        tts=new TextToSpeech(this,this);
+        tts = new TextToSpeech(this, this);
 
         btnStateB = true;
 
@@ -91,8 +92,9 @@ public class Letter_B extends Activity implements TextToSpeech.OnInitListener {
             tts.speak(speech, TextToSpeech.QUEUE_ADD, null);
 
         }
-        while (tts.isSpeaking() ) {
-        };
+        while (tts.isSpeaking()) {
+        }
+        ;
     }
 
     public void onClick(final View view) {
@@ -115,7 +117,6 @@ public class Letter_B extends Activity implements TextToSpeech.OnInitListener {
             mClickedButtonIds.add(view.getId());
         }
     }
-
 
 
     @Override
@@ -210,12 +211,13 @@ public class Letter_B extends Activity implements TextToSpeech.OnInitListener {
                 Log.d("Speed ", String.valueOf(velocityX) + " pixels/second");
 
                 if (statusB == "correct") {
+
                     Intent intent = new Intent(Letter_B.this, Letter_C.class);
-                    // intent.putExtra("statusB", "correct");
                     startActivity(intent);
                     b1.setBackgroundResource(R.drawable.buttons);
                     b3.setBackgroundResource(R.drawable.buttons);
                     onDestroy();
+
                 } else {
                     speakWords("Sorry, You did not give the correct answer. Try again");
                     finish();
@@ -226,6 +228,10 @@ public class Letter_B extends Activity implements TextToSpeech.OnInitListener {
             if (e1.getY() < e2.getY()) {
                 Log.d("Gesture ", "Up to Down swipe: " + e1.getX() + " - " + e2.getX());
                 Log.d("Speed ", String.valueOf(velocityY) + " pixels/second");
+
+                Intent intent = new Intent(Letter_B.this, Braille_Tutorials.class);
+                startActivity(intent);
+                onDestroy();
             }
             if (e1.getY() > e2.getY()) {
                 Log.d("Gesture ", "Down to Up swipe: " + e1.getX() + " - " + e2.getX());
@@ -249,7 +255,7 @@ public class Letter_B extends Activity implements TextToSpeech.OnInitListener {
     @Override
     public void onBackPressed() {
 
-        //moveTaskToBack(false);
+        moveTaskToBack(false);
 
     }
 
@@ -277,7 +283,7 @@ public class Letter_B extends Activity implements TextToSpeech.OnInitListener {
 
             if (Arrays.equals(intArray, num2)) {
 
-                if(btnStateB){
+                if (btnStateB) {
                     btnStateB = false;
                     b1.setBackgroundResource(R.drawable.reddot);
                     b3.setBackgroundResource(R.drawable.reddot);
@@ -289,7 +295,7 @@ public class Letter_B extends Activity implements TextToSpeech.OnInitListener {
                         try {
 
                             speakWords("Correct Entry of Letter B. For Letter C, swipe the screen right to left");
-                            statusB ="correct";
+                            statusB = "correct";
                             sleep(1000);
                             speakWords("To learn Letter A again, swipe screen from left to right");
 
