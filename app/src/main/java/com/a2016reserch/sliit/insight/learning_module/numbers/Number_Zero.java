@@ -16,6 +16,7 @@ import android.widget.Button;
 
 import com.a2016reserch.sliit.insight.R;
 import com.a2016reserch.sliit.insight.gaming_module.MainMenu_GamingModule;
+import com.a2016reserch.sliit.insight.learning_module.help_keypad.Braille_Tutorials;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -247,6 +248,10 @@ public class Number_Zero extends Activity implements TextToSpeech.OnInitListener
             if (e1.getY() < e2.getY()) {
                 Log.d("Gesture ", "Up to Down swipe: " + e1.getX() + " - " + e2.getX());
                 Log.d("Speed ", String.valueOf(velocityY) + " pixels/second");
+
+                Intent intent = new Intent(Number_Zero.this, Braille_Tutorials.class);
+                startActivity(intent);
+                onDestroy();
             }
             if (e1.getY() > e2.getY()) {
                 Log.d("Gesture ", "Down to Up swipe: " + e1.getX() + " - " + e2.getX());
