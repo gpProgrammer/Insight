@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Insight</string>
+    <string name="app_name">SimpleKeyboard</string>
+    <string name="simple_ime">Insight Keyboard</string>
+    <string name="subtype_en_US">English (US)</string>
 </resources>
+
+
