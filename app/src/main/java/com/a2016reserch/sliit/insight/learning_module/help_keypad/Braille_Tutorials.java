@@ -52,6 +52,10 @@ public class Braille_Tutorials extends Activity implements TextToSpeech.OnInitLi
 
                     sleep(1500);
                     speakWords("Welcome to Braille Tutorial Module");
+                    sleep(1500);
+                    speakWords("Braille tutor module consists with three tutorials like english alphabet, numbers and punctuation marks");
+                    sleep(1500);
+                    speakWords("Swipe the screen from right to left to read the menu");
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -354,15 +358,73 @@ public class Braille_Tutorials extends Activity implements TextToSpeech.OnInitLi
     public void viewText(int no) {
         if (no == 0) {
             name.setText("English Alphabet");
-            speakWords("English Alphabet Tutorial");
+
+
+            Thread logoTimer = new Thread() {
+                public void run() {
+                    try {
+
+                        sleep(1000);
+                        speakWords("English Alphabet Tutorial");
+                        sleep(1500);
+                        speakWords("To select Braille Tutor, give double tap on the mobile screen");
+
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            logoTimer.start();
 
         } else if (no == 1) {
             name.setText("Numbers");
-            speakWords("Numbers Tutorial");
+
+
+            Thread logoTimer = new Thread() {
+                public void run() {
+                    try {
+
+                        sleep(1000);
+                        speakWords("Numbers Tutorial");
+                        sleep(1500);
+                        speakWords("To select Numbers Tutorial, give double tap on the mobile screen");
+
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            logoTimer.start();
+
 
         } else if (no == 2) {
             name.setText("Punctuation Marks");
-            speakWords("Punctuation Marks Tutorial");
+
+
+            Thread logoTimer = new Thread() {
+                public void run() {
+                    try {
+
+                        sleep(1000);
+                        speakWords("Punctuation Marks Tutorial");
+                        sleep(1500);
+                        speakWords("To select Punctuation Marks Tutorial, give double tap on the mobile screen");
+
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            logoTimer.start();
         }
 
 

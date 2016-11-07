@@ -47,7 +47,12 @@ public class MainMenu_LearningModule extends Activity implements TextToSpeech.On
                 try {
 
                     sleep(1500);
-                    speakWords("Welcome to Learning Module");
+                    speakWords("Welcome to Learning Module Main menu");
+                    sleep(1500);
+                    speakWords("Main menu consists with three options like Keypad Introduction,Braille Keypad, Braille Tutor");
+                    sleep(1500);
+                    speakWords("Swipe the screen from right to left to read the menu");
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -71,7 +76,7 @@ public class MainMenu_LearningModule extends Activity implements TextToSpeech.On
             }
 
         } else {
-            Log.e("TTS", "Initilization Failed!");
+            Log.e("TTS", "Initialization Failed!");
         }
     }
 
@@ -184,7 +189,7 @@ public class MainMenu_LearningModule extends Activity implements TextToSpeech.On
 
                         sleep(1000);
                         if(lastCommand.equalsIgnoreCase("Exit!")) {
-                            speakWords("app is restarted!");
+                            speakWords("application is restarted!");
                         }
                         else
                         {
@@ -214,6 +219,7 @@ public class MainMenu_LearningModule extends Activity implements TextToSpeech.On
             int val = start;
             if (start == 0) {
                 speakWords("Keypad Introduction");
+
                 Intent intent = new Intent(MainMenu_LearningModule.this, Intro_Keypad_Top.class);
                 startActivity(intent);
                 onDestroy();
@@ -225,6 +231,7 @@ public class MainMenu_LearningModule extends Activity implements TextToSpeech.On
             } else if (start == 1) {
 
                 speakWords("Braille Keypad");
+
                 Intent intent = new Intent(MainMenu_LearningModule.this, Braille_Keypad.class);
                 startActivity(intent);
                 onDestroy();
@@ -350,33 +357,87 @@ public class MainMenu_LearningModule extends Activity implements TextToSpeech.On
     public void viewText(int no) {
         if (no == 0) {
             name.setText("Keypad Introduction");
-            speakWords("Keypad Introduction");
+
+            Thread logoTimer = new Thread() {
+                public void run() {
+                    try {
+
+                        sleep(1000);
+                        speakWords("Keypad Introduction");
+                        sleep(1000);
+                        speakWords("To select Keypad Introduction, give double tap on the mobile screen");
+                        sleep(1000);
+                        speakWords("To read the other options, swipe the screen from right to left");
+
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            logoTimer.start();
+
 
         } else if (no == 1) {
             name.setText("Braille Keypad");
-            speakWords("Braille Keypad");
+
+            Thread logoTimer = new Thread() {
+                public void run() {
+                    try {
+
+                        sleep(1000);
+                        speakWords("Braille Keypad");
+                        sleep(1500);
+                        speakWords("To select Braille Keypad, give double tap on the mobile screen");
+                        sleep(1000);
+                        speakWords("To read the other options, swipe the screen from right to left");
+
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            logoTimer.start();
 
         } else if (no == 2) {
             name.setText("Braille Tutor");
-            speakWords("Braille Tutor");
+
+            Thread logoTimer = new Thread() {
+                public void run() {
+                    try {
+
+                        sleep(1000);
+                        speakWords("Braille Tutor");
+                        sleep(1500);
+                        speakWords("To select Braille Tutor, give double tap on the mobile screen");
+                        sleep(1000);
+                        speakWords("To read the other options, swipe the screen from right to left");
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            logoTimer.start();
+
         }
 
 
     }
 
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-       /* if (flingDetector.onTouchEvent(event)) {
-            return true;
-        }*/
+
         mGestureDetector.onTouchEvent(event);
 
         return super.onTouchEvent(event);
 
-        // return super.onTouchEvent(event);
-
-
     }
-
 }
