@@ -63,7 +63,7 @@ public class MainMenu_GameLevels extends Activity implements  TextToSpeech.OnIni
                 try {
 
                     sleep(1500);
-                    speakWords("Gaming Levels");
+                    speakWords("Gaming Levels are opening");
 
                 } catch (Exception e) {
                     e.printStackTrace();

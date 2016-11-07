@@ -9,12 +9,17 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
+import com.a2016reserch.sliit.insight.calculatorSpeedDialer.Calculator_Module;
+import com.a2016reserch.sliit.insight.calculatorSpeedDialer.ContactDetails;
+import com.a2016reserch.sliit.insight.calculatorSpeedDialer.SharedPreference;
+import com.a2016reserch.sliit.insight.calculatorSpeedDialer.SpeedDialer;
 import com.a2016reserch.sliit.insight.findplaces.MainActivity;
 import com.a2016reserch.sliit.insight.gaming_module.Splash_Screen_Game;
 import com.a2016reserch.sliit.insight.learning_module.SplashScreen_LearningModule;
 
+import java.util.ArrayList;
 import java.util.Locale;
-
+import com.a2016reserch.sliit.insight.calculatorSpeedDialer.contacts;
 
 
 // branch comment
@@ -27,9 +32,11 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
     public static String lastCommand  = null;
     private int start=-1;  // main items counter variable
     private TextView name; // text view variable
-    private String [] options = new String[] { "sd","cal","ms","n","gm","lm" }; // String array for components
+    private String [] options = new String[] { "sd","cal","ms","n","gm","lm","sc" }; // String array for components
     private GestureDetector mGestureDetector; // Gesture Detector variable
     private TextToSpeech tts; // text to speech variable
+    SharedPreference sharedPreference;
+    boolean addNewcontact=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,8 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
         Intent checkIntent = new Intent();
         checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
+
+        sharedPreference=new SharedPreference();
 
         // change text view value
         name=(TextView)findViewById(R.id.textView);
@@ -205,6 +214,7 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
             name.setText("Speed Dialler");
             speakWords("Speed Dialler");
 
+
         } else if (no == 1) {
             name.setText("Calculator");
             speakWords("Calculator");
@@ -221,10 +231,18 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
             name.setText("Game");
             speakWords("Game");
         }
+        else if (no ==6) {
+            name.setText("Scheduler");
+            speakWords("Scheduler");
+        }
     }
 
     class Android_Gesture_Detector implements GestureDetector.OnGestureListener,
             GestureDetector.OnDoubleTapListener {
+
+        static final int SWIPE_MIN_DISTANCE = 120;
+        static final int SWIPE_MAX_OFF_PATH = 250;
+        static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
         @Override
         public boolean onDown(MotionEvent e) {
@@ -276,22 +294,22 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             Log.d("Gesture ", " onDoubleTap");
+            System.out.println(start);
             if(start==0)
             {
-                //  view_key_pad();
+                view_key_pad();
 
             }
             if(start==-1)
             {
-                // view_key_pad();
+                view_key_pad();
 
             }
             else if(start==1)
             {
-                //  Intent intent = new Intent(Home.this, calculator.class);
-                //  startActivity(intent);
-                // onDestroy();
-
+                Intent intent = new Intent(InsightHomeActivity.this, Calculator_Module.class);
+                startActivity(intent);
+                onDestroy();
             }
             else if(start==2)
             {
@@ -304,6 +322,7 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
             else if(start==3)
             {
                 // messaging
+                speakWords("messenger");
 
             }
             else if(start==4)
@@ -323,12 +342,29 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
                 startActivity(intent);
                 onDestroy();
             }
+            else if(start==6)
+            {
+                // Gaming Module
+                speakWords("Scheduler");
+                System.out.println("scheduler");
+
+               // Intent intent = new Intent(InsightHomeActivity.this, Splash_Screen_Game.class);
+                //startActivity(intent);
+                onDestroy();
+            }
             else
             {
-              speakWords("invalid input, check please!!");
+             // speakWords("invalid input, check please!!");
+                view_key_pad();
             }
             return true;
         }
+
+
+
+
+
+
 
         @Override
         public boolean onDoubleTapEvent(MotionEvent e) {
@@ -355,31 +391,63 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
             return true;
         }
 
+
+        @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            if (e1.getX() < e2.getX()) {
+            if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) {
+                if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH
+                        || Math.abs(velocityY) < SWIPE_THRESHOLD_VELOCITY) {
+                    return false;
+                }
+                if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE) {
 
-                Log.d("Gesture ", "Left to Right swipe: " + e1.getX() + " - " + e2.getX());
-                Log.d("Speed ", String.valueOf(velocityX) + " pixels/second");
 
-//                Intent intent = new Intent(MainActivity.this, GetNearestActivity.class);
-//                startActivity(intent);
+                    Log.d("Gesture ", " bottomToTop");
+                    if(addNewcontact) {
+                        Intent intent = new Intent(InsightHomeActivity.this, ContactDetails.class);
+                        startActivity(intent);
 
-                if (e1.getAction() == MotionEvent.ACTION_DOWN) {
-
-                    start = start + 1;
-                    if (start == 0) {
-                        start = 1;
                     }
-                    for (int i = start; i <= options.length + 1; i++) {
 
-                        if (start > 5) {
 
-                            //System.out.println(options[0]);
+
+
+                } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE) {
+
+
+                    Log.d("Gesture ", " topToBottom");
+
+                }
+            } else {
+                if (Math.abs(velocityX) < SWIPE_THRESHOLD_VELOCITY) {
+                    return false;
+                }
+                if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE) {
+
+
+
+                    Log.d("Gesture ", " RightToLeft");
+
+                    start=start+1;
+                   // if(start==0)
+                   // {
+                    //    start=1;
+                   // }
+                    for (int i = start; i <=options.length+1; i++) {
+
+                        if(start>6)
+                        {
+
+                            System.out.println(options[0]);
                             viewText(0);
-                            start = 0;
+                            start=0;
 
-                        } else {
-                            // System.out.println(options[(start)]);
+                        }
+
+
+                        else
+                        {
+                            System.out.println(options[(start)]);
                             viewText(start);
                             //  start=start+1;
 
@@ -387,19 +455,22 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
 
                         break;
                     }
-                }
 
-            }
-            if (e1.getX() > e2.getX()) {
 
-                Log.d("Gesture ", "Right to Left swipe: " + e1.getX() + " - " + e2.getX());
-                Log.d("Speed ", String.valueOf(velocityX) + " pixels/second");
 
-                if (e1.getAction() == MotionEvent.ACTION_DOWN) {
-                    start = start - 1;
-                    for (int i = start; i >= -2; i--) {
+
+
+
+
+
+
+
+                } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE) {
+
+                    start=start-1;
+                    for (int i = start; i >= -2 ; i--) {
                         if (start <= -1) {
-                            start = 5;
+                            start = 6;
                             System.out.println(options[(start)]);
                             viewText(start);
 
@@ -412,21 +483,51 @@ public class InsightHomeActivity  extends Activity implements TextToSpeech.OnIni
                         // newCount = start;
                         break;
                     }
+                    //start=start-1;
+
+                    Log.d("Gesture ", " LeftToright");
                 }
-
-//                Intent intent = new Intent(MainActivity.this, GetBusHaltsActivity.class);
-//                startActivity(intent);
-
-            }
-            if (e1.getY() < e2.getY()) {
-                Log.d("Gesture ", "Up to Down swipe: " + e1.getX() + " - " + e2.getX());
-                Log.d("Speed ", String.valueOf(velocityY) + " pixels/second");
-            }
-            if (e1.getY() > e2.getY()) {
-                Log.d("Gesture ", "Down to Up swipe: " + e1.getX() + " - " + e2.getX());
-                Log.d("Speed ", String.valueOf(velocityY) + " pixels/second");
             }
             return true;
+
+        }
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+    public void view_key_pad() {
+        boolean AlreadyThere = false;
+        // sharedPreference.removeAll(MainActivity.this);
+        ArrayList<contacts> results = sharedPreference.getContacts(InsightHomeActivity.this);
+        //  ArrayList<String> results= (ArrayList<String>) getVal("1");
+        int recount;
+        // recount= results.size();
+        // System.out.println(String.valueOf(recount));
+
+
+        if(results==null || results.size()==0) {
+
+            System.out.println("no data");
+            speakWords("There's no contact details added to the Contact list.If you like to enter new contact details swap up.");
+            //     tts.speak("There's no contact details added to the Contact list.If you like to enter new contact details swap up.", TextToSpeech.QUEUE_FLUSH, null);
+            addNewcontact=true;
+        }
+
+        else {
+            Intent intent = new Intent(this, SpeedDialer.class);
+            startActivity(intent);
+            onDestroy();
 
         }
 

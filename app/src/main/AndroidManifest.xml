@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- Add INTERNET permission to getting network based location -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -87,7 +88,15 @@
         <activity android:name=".gaming_module.MainMenu_GamingModule" />
         <activity android:name=".gaming_module.Logic.view_questions" />
         <activity android:name=".gaming_module.MainMenu_GameLevels" />
-        <activity android:name=".learning_module.english_alphabet.Letter_A"></activity>
+        <activity android:name=".learning_module.english_alphabet.Letter_A" />
+        <activity android:name=".calculatorSpeedDialer.Calculator_Module" />
+        <activity android:name=".calculatorSpeedDialer.Main2Activity" />
+        <activity android:name=".calculatorSpeedDialer.SpeedDialer" />
+        <activity android:name=".calculatorSpeedDialer.ChangeDetails" />
+        <activity android:name=".calculatorSpeedDialer.ContactDetails" />
+        <activity android:name=".calculatorSpeedDialer.DeleteContactDetails" />
+        <activity android:name=".calculatorSpeedDialer.EditContactDetails" />
+        <activity android:name=".calculatorSpeedDialer.AddContactDetails"></activity>
     </application>
 
 </manifest>

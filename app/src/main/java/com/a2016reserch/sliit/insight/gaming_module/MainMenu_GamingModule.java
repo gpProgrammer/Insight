@@ -240,13 +240,13 @@ public class MainMenu_GamingModule extends Activity implements TextToSpeech.OnIn
             } else if (start == 1) {
 
                 speakWords("Update Game");
-                speakWords("Wait a moment, game will be started in few minutes");
+                speakWords("Wait a moment, game will be updated in few minutes");
 //                Intent intent = new Intent(MainMenu_GamingModule.this, Braille_Keypad.class);
 //                startActivity(intent);
 //                onDestroy();
 
                 Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
-                Retrofit retrofit = retrofitBuilder.baseUrl("http://192.168.2.10:8084/insight/webapi/").addConverterFactory(GsonConverterFactory.create()).build();
+                Retrofit retrofit = retrofitBuilder.baseUrl("http://192.168.137.1:8084/insight/webapi/").addConverterFactory(GsonConverterFactory.create()).build();
 
                 final QuestionUpdateEndpoint updateQues = retrofit.create(QuestionUpdateEndpoint.class);
 
